@@ -1,10 +1,18 @@
 .footer {
     background-color: #fafafa;
-    padding: 1rem 1.5rem 6rem;
-    position: absolute;
+    padding: 0rem 1.5rem 6rem;
+    position: relative;
     bottom: 0;
     width: 100%;
     height: 0;
+}
+/* Styles for smaller screens (phones) */
+@media (max-width: 768px) {
+  .footer {
+      position: relative; /* Change back to relative positioning */
+      bottom: auto; /* Remove bottom property */
+      height: auto; /* Remove height property */
+  }
 }
 
 /* For image track */
