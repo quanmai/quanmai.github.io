@@ -1,45 +1,37 @@
-const track = document.getElementById("image-track");
+document.addEventListener("DOMContentLoaded", function(){
+  // Typewriter effect
+  const txtElement = document.getElementById('typewriter');
+  const words = ["Welcome to my portfolio.", "I am Quan Mai."];
+  let wordIndex = 0;
+  let txt = '';
+  let isDeleting = false;
+  let typeSpeed = 200;
 
-const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
+  function type() {
+      const current = wordIndex % words.length;
+      const fullTxt = words[current];
 
-const handleOnUp = () => {
-  track.dataset.mouseDownAt = "0";  
-  track.dataset.prevPercentage = track.dataset.percentage;
-}
+      if (isDeleting) {
+          txt = fullTxt.substring(0, txt.length - 1);
+      } else {
+          txt = fullTxt.substring(0, txt.length + 1);
+      }
 
-const handleOnMove = e => {
-  if(track.dataset.mouseDownAt === "0") return;
-  
-  const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
-        maxDelta = window.innerWidth / 2;
-  
-  const percentage = (mouseDelta / maxDelta) * -100,
-        nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
-        nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
-  
-  track.dataset.percentage = nextPercentage;
-  
-  track.animate({
-    transform: `translate(${nextPercentage}%, -50%)`
-  }, { duration: 1200, fill: "forwards" });
-  
-  for(const image of track.getElementsByClassName("image")) {
-    image.animate({
-      objectPosition: `${100 + nextPercentage}% center`
-    }, { duration: 1200, fill: "forwards" });
+      txtElement.innerHTML = `<span class="txt">${txt}</span>`;
+
+      if (!isDeleting && txt === fullTxt) {
+          typeSpeed = 2000;
+          isDeleting = true;
+      } else if (isDeleting && txt === '') {
+          isDeleting = false;
+          wordIndex++;
+          typeSpeed = 500;
+      } else {
+          typeSpeed = 200;
+      }
+
+      setTimeout(type, typeSpeed);
   }
-}
 
-/* -- Had to add extra lines for touch events -- */
-
-window.onmousedown = e => handleOnDown(e);
-
-window.ontouchstart = e => handleOnDown(e.touches[0]);
-
-window.onmouseup = e => handleOnUp(e);
-
-window.ontouchend = e => handleOnUp(e.touches[0]);
-
-window.onmousemove = e => handleOnMove(e);
-
-window.ontouchmove = e => handleOnMove(e.touches[0]);
+  type();
+});
