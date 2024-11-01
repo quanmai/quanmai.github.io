@@ -14,7 +14,8 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
         </script>
-
+    </head>
+    <body>
         <nav class="navbar has-shadow is-white">
             <div class="navbar-brand">
                 <a  class="navbar-item has-text-weight-bold is-size-5 is-family-monospace is-family-sans-serif">
@@ -28,7 +29,12 @@
             </div>
 
             <div class="navbar-menu" id="nav-links">
+                <!-- About, Personal, and Resume links -->
+                <a href="#" class="navbar-item">About</a>
+                <a href="buttery.html" class="navbar-item">Personal</a>
+                <a href="files/resume.pdf" target="_parent" class="navbar-item">Resume</a>
                 <div class="navbar-end">
+                    <!-- Social icons -->
                     <a href="https://github.com/quanmai" class="bd-navbar-icon navbar-item">
                         <span class="icon" style="color: var(--github);">
                             <i class="fab fa-lg fa-github"></i>
@@ -49,32 +55,21 @@
                             <i class="fab fa-lg fa-instagram"></i>
                         </span>
                     </a>
+
+
                 </div>
             </div>
         </nav>
 
-        <!-- breadscrumbs -->
-        <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
-            <ul>
-            <li class="is-active"><a href="#" aria-current="page">About</a></li>
-            <li><a href="buttery.html">Personal</a></li>
-            <li><a href="files/resume.pdf" target="_parent">Resume</a></li>
-            </ul>
-        </nav>
-        
         <script>
             $(function() {
-                // $("#header").load("header.html");
                 $("#footer").load("footer.html");
                 $("#about").load("about.html");
             });
         </script>
-    </head>
-    <body>
+
         <div id="about"></div>
         <div id="footer"></div>
         <script src="index.js"></script>
-    
-        
     </body>
 </html>

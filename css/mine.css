@@ -1,3 +1,9 @@
+.fas.fa-envelope {
+  margin-right: 8px;
+  color: #333; /* Customize icon color if needed */
+  font-size: 1.0em; /* Icon size */
+}
+
 .footer {
     background-color: #fafafa;
     padding: 0rem 1.5rem;
