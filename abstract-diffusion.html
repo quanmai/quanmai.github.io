@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quan Mai</title>
+        <link rel="stylesheet" href="./css/bulma.css">
+        <link rel="stylesheet" href="./css/mine.css">
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> -->
+
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script defer src="track.js"></script>
+
+
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <script>
+            $(function() {
+                $("#footer").load("footer.html");
+                $("#about").load("about.html");
+                $("#navbar").load("navbar.html");
+            });
+        </script>
+
+        <style>
+            body {
+                counter-reset: section;
+            }
+            h2 {
+                counter-reset: subsection;
+            }
+            h2::before {
+                counter-increment: section;
+                content: counter(section) ". ";
+                font-weight: bold;
+            }
+            h3::before {
+                counter-increment: subsection;
+                content: counter(section) "." counter(subsection) " ";
+                font-weight: bold;
+            }
+        </style>
+
+        <!-- <div id="navbar"></div> -->
+        <nav class="navbar has-shadow is-white">
+            <div class="navbar-brand">
+                <a  class="navbar-item has-text-weight-bold is-size-5 is-family-monospace is-family-sans-serif">
+                    Quan Mai (Mai Thanh Quân)
+                </a>
+                <a class="navbar-burger" id="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+        
+            <div class="navbar-menu" id="nav-links">
+                <!-- About, Personal, and Resume links -->
+                <a href="index.html" class="navbar-item">About</a>
+                <a href="buttery.html" class="navbar-item">Personal</a>
+                <a href="files/resume.pdf" target="_parent" class="navbar-item">Resume</a>
+                <a href="#" class="navbar-item is-active">Learning</a>
+                <div class="navbar-end">
+                    <!-- Social icons -->
+                    <a href="https://github.com/quanmai" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-github"></i>
+                        </span>
+                    </a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=-s-SAEgAAAAJ" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-google-scholar"></i>
+                        </span>
+                    </a>
+                    <a href="https://linkedin.com/in/quan-mai-88954913b" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-linkedin"></i>
+                        </span>
+                    </a>
+                    <a href="https://www.instagram.com/quanmai_rzb/" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-instagram"></i>
+                        </span>
+                    </a>
+        
+        
+                </div>
+            </div>
+        </nav>
+    </head>
+
+    <body>
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label p-2">Learning</p>
+                    <ul class="menu-list">
+                      <li><a href="learning.html">Abstract Thinking</a></li>
+                      <li><a class="is-active" href="">Diffusion Model</a></li>
+                    </ul>
+                </aside>
+
+            </div>
+            <!-- <section class="section"> -->
+                <!-- <div class="container"> -->
+                    <div class="column is-7 is-offset-1">
+                        <div class="content">
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Diffusion</h1>
+                            <p>
+                                Let's of think of a drop of ink
+                                spreading into water. At first, the ink is concentrated, but as it <i>diffuses</i>, it spreads out
+                                and becomes a uniform blur over time. If we could magically reverse this process, we could 
+                                recover the original ink drop. <i>Diffusion</i>, in simple sense, is about spreading out 
+                                due to random motion.
+                                <div class="has-text-centered">
+                                    <figure class="image is-inline-block" style="width: 50%;">
+                                        <img src="assets/water-diffusion.jpg" style="width: 100%;">
+                                        <p>A drop of ink spreading into water (Photo: <a rel="Website" href="https://www.thesprucecrafts.com" target="_blank">thesprucecrafts.com</a>) </p>
+                                    </figure>
+                                </div>
+                            </p>
+                            <p>
+                                In computer science, specifically in machine learning, diffusion models 
+                                are types of generative models that learn to reverse the process of <i>corruption</i>—
+                                turning a noisy, disordered state into a structured, meaningful one. 
+                                Denoising diffusion models<a href="#ref1" id="citation1"><sup>[1]</sup></a>, at an abstract level, involve 
+                                gradual transformation through structured randomness.
+                            </p>
+
+
+                            <h2>Destruction and Reconstruction</h2>
+                            <p>
+                                At its heart, diffusion models follow a broader principle:
+                                <blockquote>A system can move from randomness to clarity if guilded by an intelligent process that 
+                                    learns to undo disorder step by step.
+                                </blockquote>
+                                Denoising diffusion models comprise of two processes: <b>forward</b> and <b>reverse</b>. 
+                                Let us think of it like sculpting a statue from a block of marble.
+                            </p>
+                            
+                            <h3>Forward Process: Controlled Destruction</h3>
+                                <p>
+                                    The diffusion process gradually adds (Gaussian) <a rel="Website" href="https://en.wikipedia.org/wiki/Gaussian_noise" target="_blank">noise</a>  
+                                    to data until the signal is destroyed, or until people say <q>what the heck did they do to you</q> (pardon my dry joke).
+                                    This is analogous to taking a beautiful
+                                    sculpture and gradually chipping away at it, here and there. At first, we can still see the shape,
+                                    but as we keep chipping, it becomes more and more unrecognizable - eventually turning into a formless rock.
+                                </p>
+        
+                            <h3>Reverse Process: Learning to Rebuild Step by Step</h3>
+                                <p>
+                                    The model learns how to reconstruct data by reversing noise addition at each step. 
+                                    This mirrors a general principle:
+                                    <blockquote>
+                                        If you understand how disorder is introduced, you can learn how to remove it systematically.
+                                    </blockquote>
+                                    Now, if we are given this formless rock and asked to reconstruct the original sculpture, 
+                                    we can't just <q>glue back</q> the lost pieces. Instead, we must <b>learn</b> the patterns
+                                    of how sculptures are typically made and gradually refine the shape, step by step, until 
+                                    something recognizable emerges.
+                                </p>
+                            
+                            <h3>Why Can't We just Reverse Gaussion Noise</h3>
+                            <p>
+                                Some might ask, okay I am not lying, I asked myself this question too, 
+                                <q>If noise is added in a well-defined way (like Gaussian noise), why can't we just reverse it directly?</q>
+                                The answer lies in the <i>irreversibility</i> and <i>uncertainty</i> of the process.
+                                <br>
+                                <h4> Randomness in the Noise Process</h4>
+                                <p>
+                                    Even though Gaussian noise has a known distribution, at each step, the noise added is 
+                                    <b>random</b> (stochastic). The artist doesn't know how the sculpture was chipped away - 
+                                    only that the process follows a general pattern (the noise distribution), what
+                                    is given is just the final formless rock.
+                                    This means we don't just have a simple function that maps
+                                    <q>noisy data -> clean data</q>. Instead, we need to learn the underlying distribution of
+                                    the original data.
+                                </p>
+                                <h4>The Problem of Many-to-One Mapping</h4>
+                                <p>
+                                    At high noise level, many different images (or data points) can become nearly indistinguishable.
+                                    because they all look like a random noise.
+                                    There is no simple one-to-one mapping back to the
+                                    original data. Instead, diffusion models <b>learns a probabilistic way</b> to gradually reconstruct
+                                    the original data. This is like trying to guess the original sculpture from a rough rock. 
+                                    The process of destruction removes fine details, making it hard to tell the original shape.
+                                </p>
+                                
+                                Instead of direct inversion, diffusion models <i>learn</i> a <b>denoising function</b>
+                                using a <span style="text-decoration: line-through; opacity: 0.5;">magical box</span> deep neural network.
+                                This function predicts the original structure from the noisy data, step by step. It learns the probability
+                                distribution of data, so the model can <q>guess</q> the right reconstruction rather just mathematically
+                                reversing the Gaussion noise.
+                                <br>
+                                <br>
+                                <blockquote class="box has-text-centered" style="max-width: 500px; margin: 0 auto; padding: 1rem; background: #b8d6d7; border-left: 4px #c4cedd;">
+                                    It's not about <b>undoing</b> but about <b>reimagining</b> the structure in a way that makes sense!
+                                </blockquote>
+                                <br>
+                                After the learning process, the model can generate new data by <b>conditioning</b> on the noisy data.
+                                Thinking of it like an artist who has seen thousands of sculptures before. If you give them a block of marble,
+                                with only some vague chisel marks left, they won't recreate the exact lost sculpture, but they can 
+                                carve something that fits within the general style and structure of what they have learned.
+                                Similarly, the diffusion models does not memorize the individual images, it learns the overall structure of
+                                data so it can generate something <i>statistically likely</i> rather than an exact copy of the original.
+
+                            </p>
+                            <h2> Thinking beyond AI</h2>
+                            <p>
+                                Denoising diffusion isn't just about generating images - it reflects a general way of thinking about problem-solving:
+                                <ul>
+                                    <li>Data Recovery: How can lost information be reconstructed? (e.g., removing noise from old photographs)</li>
+                                    <li>Scientific Discovery: Can we reverse-engineer complex systems into their origins?
+                                        (e.g., understanding the evolution of species, or understanding the early universe from cosmic background radiation)
+                                    </li>
+                                    <li>Cognitive Processing: How do humans recall memories despite partial forgetting? Memories might be noisy or blurred, 
+                                        and our cognition refines them into a coherent picture, similar to how a diffusion model reconstructs images from noise.
+                                    </li>
+                                </ul>
+                                <div class="tile is-parent">
+                                    <figure class="image">
+                                        <img src="assets/history-of-the-universe-2015.jpg">
+                                        <p>History of the Universe (Photo: <a rel="Website" href="https://www.particleadventure.org" target="_blank">particleadventure.org</a>).
+                                        </p>
+                                    </figure>
+                                </div>
+                            </p>
+
+                            <h2 class="title is-3">References</h2>
+                            <ol>
+                                <li id="ref1">
+                                    <b>[1]</b> Jonathan Ho, Ajay Jain, Pieter Abbeel, 
+                                    "<i>Denoising Diffusion Probabilistic Models</i>," 
+                                    Advances in Neural Information Processing Systems (NeurIPS), 2020.  
+                                    <a href="https://arxiv.org/abs/2006.11239" target="_blank">[arXiv:2006.11239]</a>  
+                                    <a href="#citation1">↑ Back to text</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>    
+                <!-- </div> -->
+            <!-- </section> -->
+        <!-- <div id="footer"></div> -->
+    </body>
+</html>

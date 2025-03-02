@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quan Mai</title>
+        <link rel="stylesheet" href="./css/bulma.css">
+        <link rel="stylesheet" href="./css/mine.css">
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> -->
+
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script defer src="track.js"></script>
+
+
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <script>
+            $(function() {
+                $("#footer").load("footer.html");
+                $("#about").load("about.html");
+                $("#navbar").load("navbar.html");
+            });
+        </script>
+
+        <!-- <div id="navbar"></div> -->
+        <nav class="navbar has-shadow is-white">
+            <div class="navbar-brand">
+                <a  class="navbar-item has-text-weight-bold is-size-5 is-family-monospace is-family-sans-serif">
+                    Quan Mai (Mai Thanh Quân)
+                </a>
+                <a class="navbar-burger" id="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+        
+            <div class="navbar-menu" id="nav-links">
+                <!-- About, Personal, and Resume links -->
+                <a href="index.html" class="navbar-item">About</a>
+                <a href="buttery.html" class="navbar-item">Personal</a>
+                <a href="files/resume.pdf" target="_parent" class="navbar-item">Resume</a>
+                <a href="#" class="navbar-item is-active">Learning</a>
+                <div class="navbar-end">
+                    <!-- Social icons -->
+                    <a href="https://github.com/quanmai" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-github"></i>
+                        </span>
+                    </a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=-s-SAEgAAAAJ" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-google-scholar"></i>
+                        </span>
+                    </a>
+                    <a href="https://linkedin.com/in/quan-mai-88954913b" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-linkedin"></i>
+                        </span>
+                    </a>
+                    <a href="https://www.instagram.com/quanmai_rzb/" class="bd-navbar-icon navbar-item">
+                        <span class="icon" style="color: var(--github);">
+                            <i class="fab fa-lg fa-instagram"></i>
+                        </span>
+                    </a>
+        
+        
+                </div>
+            </div>
+        </nav>
+
+        <!-- breadscrumbs -->
+        <!-- <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+            <ul>
+            <li><a href="index.html">About</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Personal</a></li>
+            <li><a href="files/resume.pdf" target="_parent">Resume</a></li>
+            </ul>
+        </nav> -->
+        
+
+    </head>
+    <body>
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label">
+                      Learning
+                    </p>
+                    <ul class="menu-list">
+                      <li><a class="is-active" href="">Abstracting</a></li>
+                      <li><a href="abstract-diffusion.html">diffusion</a></li>
+                    </ul>
+
+                </aside>
+
+            </div>
+    
+            <div class="column is-7 is-offset-1">
+                <div class="content">
+                    <h1>Abstract Thinking</h1>
+                    <p>
+                        When listenning to popcasts, I realize that many great researchers have an ability to explain complex ideas in an abstract yet intuitive way.
+                        This does not mean they cannot explain things in technical details; rather, they can distill complex concepts into simpler, more relatable explainations.
+                        Abstract thinking requires a deep understanding of the subject and the ability to simplify things.
+                        Simplify difficult concepts is itself difficult. 
+                        <!-- It is like writing a poem. You need to choose the right words, and put them in the right order. -->
+                        The deeper your understanding, the easier it becomes to break things down and communicate them clearly. Yet, I have found it challenging to do this myself.
+                        Therefore, I write this page to practice my abstract thinking, hopefully I can learn things deeply and explain things clearly.
+                    </p>
+                </div>
+            </div>
+
+    
+        <!-- <div id="footer"></div> -->
+    </body>
+</html>
