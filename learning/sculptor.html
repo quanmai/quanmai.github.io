@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quan Mai</title>
+        <link rel="stylesheet" href="../css/bulma.css">
+        <link rel="stylesheet" href="../css/mine.css">
+        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons/css/all.min.css" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <div id="navbar"></div>
+        <!-- <div id="footer"></div> -->
+        <script>
+            $(function() {
+                $("#footer").load("../footer.html");
+                $("#about").load("../about.html");
+                $("#navbar").load("../navbar.html");
+            });
+        </script>
+
+        <!-- <style>
+            body {
+                counter-reset: section;
+            }
+            h2 {
+                counter-reset: subsection;
+            }
+            h2::before {
+                counter-increment: section;
+                content: counter(section) ". ";
+                font-weight: bold;
+            }
+            h3::before {
+                counter-increment: subsection;
+                content: counter(section) "." counter(subsection) " ";
+                font-weight: bold;
+            }
+        </style> -->
+
+    </head>
+
+    <body>
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label">Learning</p>
+                        <ul class="menu-list">
+                            <li><a href="../learning.html">Abstract Thinking</a></li>
+                        </ul>
+                    <p class="menu-label">Diffusion</p>
+                        <ul class="menu-list">
+                            <li><a href="diffusion.html">Diffusion Models</a></li>
+                            <li><a class="is-active" href="">Diffusion as a Manifold Sculptor</a></li>
+                        </ul>
+                    <p class="menu-label">Others</p>
+                </aside>
+
+            </div>
+            
+            <section class="section">
+                <div class="container">
+                    <div class="column is-7 is-offset-2">
+                        <div class="content">
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Diffusion as a Manifold Sculptor</h1>
+                            <p class="is-size-5">
+                                In math and machine learning, a <a href="https://en.wikipedia.org/wiki/Manifold">Manifold</a> is a lower-dimensional, smooth surface
+                                embedded in a higher-dimensional space. For embeddings, the idea is that the data points
+                                (documents, images, etc.) lie on some intrinsic structure - a curve <q>sheet</q> defined by
+                                the underlying relationships in the data - rather than filling the full higher-dimensional space randomly.
+                                <br><br>
+                                <b>Pretrained Embeddings as a Manifold:</b> When a model like BERT spits out embeddings, they are not
+                                just random points in 768-D space. The training process (e.g., masked language modeling) contrains them
+                                to a subspace reflecting linguistic patterns - similar sentences cluster, dissimilar ones drift apart.
+                                <br>
+                                While it's a manifold, it's not necessarily optimized for a specific
+                                task (e.g., document retrieval, QA). BERT's manifold is tuned for general language understanding - good
+                                for many things, but not perfert for fine-grained tasks. It's a <i>general-purpose manifold,</i> not
+                                a task-specific one.
+                            </p>
+
+
+                            <h2>Diffusion Models: Shapping the Manifold</h2>
+                            <p class="is-size-5">
+                                <b>Diffusion Models</b> are popular in generative tasks such as image synthesis (e.g., DALL-E, Stable Diffusion),
+                                they work by iteratively refining noisy data back to a clean, high-quality state. Here, instead of creating 
+                                a manifold from a scratch, diffusion models will <i>refine and reshape</i> the existing one 
+                                to better suit the task at hand. Let us take the retrieval task as the example here. 
+                                <br><br>
+                                Given a query, we want to find the most relevant documents in the corpus. At the starting point, we 
+                                use the pretrained embeddings (e.g., BERT) to represent the query and documents. The raw BERT embeddings are on 
+                                a pretrained manifold, it's decent (semantically meaningful) but might not align perfertly 
+                                with retrieval goals. Here's where the diffusion model comes in...
+                                <br><br>
+
+                                By adding noise and iteratively denoising, the diffusion model perturbs these embeddings and learns
+                                to restore them in a way that emphasizes the task-specific structure. The noise here is important:
+                                <ul class="is-size-6">
+                                    <li> 
+                                        <b>Noise as Explorer:</b> Adding Gaussion noise <q>shake</q> the embeddings off the original manifold,
+                                        exploring nearby regions in the high-dimensional space.
+                                    </li>
+                                    <li>
+                                        <b>Denoising as Sculptor:</b> The model, trained to reverse the noise (e.g., via MSE or contrastive learning), pulls the embedding back,
+                                        not to their exact original spots, but to a new location that better aligns with the retrieval task.
+                                    </li>
+                                </ul>
+                            </p>
+                            
+                            <p class="is-size-5">
+
+                                The refined embeddings still from a manifold - a continuous, lower-dimensional structure - but it's 
+                                now <b>task-tailored.</b>
+                            </p>
+                                
+                            <!-- <div class="columns is-vcentered">
+                                <div class="column is-three-quarters">
+                                    <p class="content">
+                                        Denoising diffusion models, at an abstract level, are about gradually transforming data through structured randomness. 
+                                        They leverage a forward and reverse process to denoise corrupted data step by step, revealing a meaningful structure. 
+                                        This process can be thought of as sculpting a statue from a block of marble.
+                                    </p>
+                                </div>
+                            
+                                <div class="column is-one-quarter">
+                                    <figure class="image is-4by3">
+                                        <img src="../assets/clay.jpg" alt="Diffusion Model Illustration">
+                                    </figure>
+                                </div>
+                            </div> -->
+
+
+                            <div class="has-text-centered">
+                                <figure class="image is-inline-block">
+                                    <img src="../assets/clay.jpg">
+                                    <p>Sculpting clay (Photo: <a rel="Website" href="https://acrylgiessen.com" target="_blank">https://acrylgiessen.com</a>) </p>
+                                </figure>
+                            </div>     
+                            <br><br>
+                            <blockquote class="is-size-5">
+                                We can think of pretrained embeddings as a rough clay sculpture. It already has a shape (a manifold) but not detailed for our needs.
+                                The diffusion model is like an artist, it smudges the clay (add noise) and then smooths it out (denoising), refining the contours
+                                to highlight the features we care about. The clay is still there - it's not a new sculpture - just better molded.
+                            </blockquote>              
+                            <h2>Refinement, not Replacement</h2>
+                            <p class="is-size-5">
+                                The key here is that diffusion model does not discard BERT's manifold, it does leverage it as a strong
+                                foundation. Diffusion here acts as a fine-tuner, using a pretrained manifold as a head start (better than a random
+                                vectors). Witout that starting structure, denoising from pure noise would be much harder and less effective.
+                            </p>
+
+                            <h2>So, Yes - Diffusion Model Can Be a Manifold Sculptor</h2>
+                            <p class="is-size-5">
+                                The diffusion model's job here is to <b>shape the existing manifold</b>. It takes the pretrained embeddings'
+                                inherent structure and molds it into a form  that's more useful for retrieval. It's neither a discriminator
+                                nor a generator - it's a <b>manifold sculptor</b>, enhancing what's already there.
+                            </p>
+                        </div>
+                    </div>    
+                </div>
+            </section>
+    </body>
+</html>
