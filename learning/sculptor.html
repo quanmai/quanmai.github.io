@@ -60,6 +60,9 @@
                             <li><a class="is-active" href="">Diffusion as a Manifold Sculptor</a></li>
                         </ul>
                     <p class="menu-label">Others</p>
+                    <ul class="menu-list">
+                        <li><a href="transformer.html">Transformers</a></li>
+                    </ul>
                 </aside>
 
             </div>
@@ -85,7 +88,7 @@
                                 a task-specific one.
                             </p>
 
-
+                            <br>
                             <h2>Diffusion Models: Shapping the Manifold</h2>
                             <p class="is-size-5">
                                 <b>Diffusion Models</b> are popular in generative tasks such as image synthesis (e.g., DALL-E, Stable Diffusion),
@@ -147,19 +150,40 @@
                                 We can think of pretrained embeddings as a rough clay sculpture. It already has a shape (a manifold) but not detailed for our needs.
                                 The diffusion model is like an artist, it smudges the clay (add noise) and then smooths it out (denoising), refining the contours
                                 to highlight the features we care about. The clay is still there - it's not a new sculpture - just better molded.
-                            </blockquote>              
+                            </blockquote>  
+                            <br>
+
                             <h2>Refinement, not Replacement</h2>
                             <p class="is-size-5">
                                 The key here is that diffusion model does not discard BERT's manifold, it does leverage it as a strong
                                 foundation. Diffusion here acts as a fine-tuner, using a pretrained manifold as a head start (better than a random
                                 vectors). Witout that starting structure, denoising from pure noise would be much harder and less effective.
                             </p>
+                            <br>
 
                             <h2>So, Yes - Diffusion Model Can Be a Manifold Sculptor</h2>
                             <p class="is-size-5">
                                 The diffusion model's job here is to <b>shape the existing manifold</b>. It takes the pretrained embeddings'
                                 inherent structure and molds it into a form  that's more useful for retrieval. It's neither a discriminator
                                 nor a generator - it's a <b>manifold sculptor</b>, enhancing what's already there.
+                            </p>
+                            <br>
+                            
+                            <h2>Of Course, No Free Lunch!</h2>
+                            <p class="is-size-5">
+                                While the idea sounds promising (ikr), and diffusion models are powerful, they are not a silver bullet. 
+                                
+                                <br><br>
+                                <b>Computational Cost: </b>Remember that the reverse process (denoising) is iteratively, which means it's not a one-shot operation.
+                                We have to denoise the embeddings multiple times (say, 100) to get the refined version.
+                                Of course we can pre-refine the documents and store them in a database, as in the case of dense retrieval.
+                                Running 100 denoising steps per document, for a corpus of millions of documents, can be computationally expensive.
+                                <br><br>
+                                <b>Training Complexity:</b> We need a smart loss function to guide the denoising toward <q>discrimitive</q> rather
+                                than just <q>clean</q>. Contrasitve loss might work, but I am not certain. If I have a paper on this topic, I will
+                                let you know 😊.
+                                
+                                
                             </p>
                         </div>
                     </div>    
