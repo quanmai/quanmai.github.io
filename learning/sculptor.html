@@ -78,7 +78,7 @@
                                 (documents, images, etc.) lie on some intrinsic structure - a curve <q>sheet</q> defined by
                                 the underlying relationships in the data - rather than filling the full higher-dimensional space randomly.
                                 <br><br>
-                                <b>Pretrained Embeddings as a Manifold:</b> When a model like BERT spits out embeddings, they are not
+                                <b>Pretrained Embeddings as a Manifold:</b> When a model like BERT<a href="#ref-1" id="citation1"><sup>[1]</sup></a> spits out embeddings, they are not
                                 just random points in 768-D space. The training process (e.g., masked language modeling) contrains them
                                 to a subspace reflecting linguistic patterns - similar sentences cluster, dissimilar ones drift apart.
                                 <br>
@@ -91,7 +91,7 @@
                             <br>
                             <h2>Diffusion Models: Shapping the Manifold</h2>
                             <p class="is-size-5">
-                                <b>Diffusion Models</b> are popular in generative tasks such as image synthesis (e.g., DALL-E, Stable Diffusion),
+                                <b>Diffusion Models</b><a href="#ref-2" id="citation2"><sup>[2]</sup></a> are popular in generative tasks such as image synthesis (e.g., DALL-E, Stable Diffusion),
                                 they work by iteratively refining noisy data back to a clean, high-quality state. Here, instead of creating 
                                 a manifold from a scratch, diffusion models will <i>refine and reshape</i> the existing one 
                                 to better suit the task at hand. Let us take the retrieval task as the example here. 
@@ -104,7 +104,7 @@
 
                                 By adding noise and iteratively denoising, the diffusion model perturbs these embeddings and learns
                                 to restore them in a way that emphasizes the task-specific structure. The noise here is important:
-                                <ul class="is-size-6">
+                                <ul class="is-size-5">
                                     <li> 
                                         <b>Noise as Explorer:</b> Adding Gaussion noise <q>shake</q> the embeddings off the original manifold,
                                         exploring nearby regions in the high-dimensional space.
@@ -157,7 +157,7 @@
                             <p class="is-size-5">
                                 The key here is that diffusion model does not discard BERT's manifold, it does leverage it as a strong
                                 foundation. Diffusion here acts as a fine-tuner, using a pretrained manifold as a head start (better than a random
-                                vectors). Witout that starting structure, denoising from pure noise would be much harder and less effective.
+                                vectors). Without that starting structure, denoising from pure noise would be much harder and less effective.
                             </p>
                             <br>
 
@@ -182,9 +182,31 @@
                                 <b>Training Complexity:</b> We need a smart loss function to guide the denoising toward <q>discrimitive</q> rather
                                 than just <q>clean</q>. Contrasitve loss might work, but I am not certain. If I have a paper on this topic, I will
                                 let you know 😊.
-                                
-                                
                             </p>
+
+
+                            <br><br>
+                            <h2>References</h2>
+                            <ol class="reference-list">
+                                <li id="ref-1">
+                                    Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova,
+                                    "<i>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</i>,"
+                                    arXiv preprint arXiv:1810.04805, 2018. 
+                                    <a href="https://arxiv.org/abs/1810.04805" target="_blank">[arXiv:1810.04805]</a>
+                                    <a href="#citation1">↑ Back to text</a>
+                                </li>
+                                
+                                <li id="ref-2">
+                                    Jonathan Ho, Ajay Jain, Pieter Abbeel, 
+                                    "<i>Denoising Diffusion Probabilistic Models</i>," 
+                                    Advances in Neural Information Processing Systems (NeurIPS), 2020.  
+                                    <a href="https://arxiv.org/abs/2006.11239" target="_blank">[arXiv:2006.11239]</a>  
+                                    <a href="#citation2">↑ Back to text</a>
+                                </li>
+
+                            </ol>
+
+
                         </div>
                     </div>    
                 </div>
