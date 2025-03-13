@@ -24,16 +24,26 @@
             });
         </script>
 
-       
-
-        <!-- breadscrumbs -->
-        <!-- <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
-            <ul>
-            <li><a href="index.html">About</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Personal</a></li>
-            <li><a href="files/resume.pdf" target="_parent">Resume</a></li>
-            </ul>
-        </nav> -->
+        <style>
+            .typewriter {
+                overflow: hidden;
+                white-space: nowrap;
+                border-right: 2px solid black; /* Simulate a cursor */
+                width: 0;
+                animation: typing 3s steps(40, end) forwards, blink 0.75s step-end infinite;
+            }
+        
+            @keyframes typing {
+                from { width: 0; }
+                to { width: 100%; }
+            }
+        
+            @keyframes blink {
+                from, to { border-color: transparent; }
+                50% { border-color: black; }
+            }
+        </style>
+        
         
 
     </head>
