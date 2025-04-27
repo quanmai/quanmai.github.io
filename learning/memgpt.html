@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quan Mai</title>
+        <link rel="stylesheet" href="../css/bulma.css">
+        <link rel="stylesheet" href="../css/mine.css">
+        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons/css/all.min.css" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <div id="navbar"></div>
+        <!-- <div id="footer"></div> -->
+        <script>
+            $(function() {
+                // $("#footer").load("footer.html");
+                // $("#about").load("about.html");
+                $("#navbar").load("../navbar.html");
+            });
+        </script>
+
+        <!-- <style>
+            body {
+                counter-reset: section;
+            }
+            h2 {
+                counter-reset: subsection;
+            }
+            h2::before {
+                counter-increment: section;
+                content: counter(section) ". ";
+                font-weight: bold;
+            }
+            h3::before {
+                counter-increment: subsection;
+                content: counter(section) "." counter(subsection) " ";
+                font-weight: bold;
+            }
+        </style> -->
+
+    </head>
+
+    <body>
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label p-2">But why</p>
+                        <ul class="menu-list">
+                            <li><a href="../learning.html">Because...</a></li>
+                        </ul>
+                    <p class="menu-label">Writings</p>
+                        <ul class="menu-list">
+                            <li><a href="diffusion.html">Diffusion Models</a></li>
+                            <li><a href="sculptor.html">Diffusion as a Manifold Sculptor</a></li>
+                            <li><a href="transformer.html">Transformers</a></li>
+                        </ul>
+                    <p class="menu-label">Paper Summary</p>
+                        <ul class="menu-list">
+                        <li><a class="is-active" href="">MemGPT</a></li>
+                    </ul>
+                </aside>
+
+            </div>
+            <section class="section">
+                <div class="container">
+                    <div class="column is-7 is-offset-2">
+                        <div class="content">
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">MemGPT: Towards LLMs as Operating Systems</h1>
+                            <p>
+                                My notes on the paper <a href="https://arxiv.org/pdf/2310.08560" target="_blank">MemGPT: Towards LLMs as Operating Systems</a> by Parker et al. (2023).
+                            </p>
+
+                            <h2>Motivation</h2>
+                            <p>
+                                LLMs have a critical weakness: a fixed context window. 
+                                This means they can only "remember" a limited amount of recent information 
+                                (a few thousand words), forgetting everything that came before, 
+                                which hinders long conversations or analyzing large documents.
+                                <br>
+                                <br>
+                                MemGPT: How can we empower LLMs to process and recall information over sequences 
+                                that vastly exceed their built-in context limits, 
+                                enabling persistent memory across long interactions?
+                            </p>
+                            
+                            <h2>Approach</h2>
+                                <p>
+                                    MemGPT introduces an innovative memory management system for LLMs, 
+                                    drawing inspiration from how operating systems manage memory in computers. 
+                                    It creates a tiered memory structure:
+                                    <ul>
+                                        <li><b>Main Context</b>: The LLM's standard, limited working memory (like RAM).</li>
+                                        <li>
+                                            <b>External Context</b>: An effectively unlimited storage space where information can be saved (like a hard drive). 
+                                            The key insight is that MemGPT acts as a memory manager within the LLM itself. 
+                                            Using carefully crafted instructions (prompts or function calls), 
+                                            the LLM learns to autonomously manage this system - 
+                                            deciding when to push less critical info to external storage 
+                                            and when to retrieve relevant memories back into its main 
+                                            context for current processing.
+                                        </li>
+                                    </ul>
+                                </p>
+                                <p>
+                            
+                                    <b>Dataset:</b> Xu et al. (2021)'s <a href="https://arxiv.org/pdf/2107.07567" target="_blank"> Multi-Session Chat</a>.
+                                </p>
+        
+                            <h2>Findings</h2>
+                                <p>
+                                    <ul>
+                                        <li>MemGPT enables LLMs to successfully manage their own finite context, allowing for coherent interactions and data analysis over sequences much longer than previously possible.</li>
+                                        <li>It demonstrated strong capabilities in tasks like maintaining conversational consistency over many turns (multi-session chat) and answering questions about long documents 
+                                            by intelligently retrieving relevant sections.</li>
+                                        <li>The system proved that LLMs can be effectively prompted to use "tools," like these memory management functions, to overcome their inherent limitations.                                        </li>
+                                    </ul>
+                                    
+                                </p>
+                            
+                            <h2>Takeaway</h2>
+                            <p>
+                                <ul>
+                                    <li>MemGPT redefines LLM architecture: it's not about bigger models, it's about <b>better system design</b> around LLMs.</li>
+                                    <li>Memory (and also agent) management are critical for building autonomous AI systems</li>
+                                    <li>The authors even go further, start a company out of this paper's idea: <a href="https://www.letta.com/" target="_blank"> Letta</a></li>
+                                </ul>
+                            </p>
+                            
+                            
+                            <!-- <h2>References</h2>
+                            <ol>
+                                <li id="ref1">
+                                    Jonathan Ho, Ajay Jain, Pieter Abbeel, 
+                                    "<i>Denoising Diffusion Probabilistic Models</i>," 
+                                    Advances in Neural Information Processing Systems (NeurIPS), 2020.  
+                                    <a href="https://arxiv.org/abs/2006.11239" target="_blank">[arXiv:2006.11239]</a>  
+                                    <a href="#citation1">↑ Back to text</a>
+                                </li>
+                            </ol> -->
+                        </div>
+                    </div>    
+                </div>
+            </section>
+        <!-- <div id="footer"></div> -->
+    </body>
+</html>
