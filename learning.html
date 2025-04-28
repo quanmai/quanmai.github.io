@@ -24,28 +24,29 @@
             });
         </script>
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
         <style>
-            .typewriter {
-                overflow: hidden;
-                white-space: nowrap;
-                border-right: 2px solid black; /* Simulate a cursor */
-                width: 0;
-                animation: typing 3s steps(40, end) forwards, blink 0.75s step-end infinite;
-            }
-        
-            @keyframes typing {
-                from { width: 0; }
-                to { width: 100%; }
-            }
-        
-            @keyframes blink {
-                from, to { border-color: transparent; }
-                50% { border-color: black; }
-            }
+        .feed-container {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        /* Ensure carousel controls are easily visible if needed */
+        .carousel .slider-arrow button {
+            background-color: rgba(0,0,0,0.3); /* Example styling */
+            color: white;
+            border: none;
+        }
+        .carousel .slider-arrow button:hover {
+            background-color: rgba(0,0,0,0.6);
+        }
+        /* Style pagination dots if desired */
+        .carousel .slider-navigation-bullets .slider-navigation-bullet button {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .carousel .slider-navigation-bullets .slider-navigation-bullet.is-active button {
+            background-color: rgba(255, 255, 255, 1);
+        }
         </style>
-        
-        
-
     </head>
     <body>
         <div class="columns">
@@ -74,7 +75,8 @@
                     <div class="column is-7 is-offset-2">
                         <div class="content">
 
-                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Understanding Things By Writing</h1>
+                            <!-- <h1 class="title is-1 has-text-centered is-family-sans-serif">Understanding Things By Writing</h1> -->
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">...</h1>
                             <p class="is-size-5">
                                 <!-- When listenning to popcasts, I realize that many great researchers have an ability to explain complex ideas in an abstract yet intuitive way.
                                 This does not mean they cannot explain things in technical details; rather, they can distill complex concepts into simpler, more relatable explainations.
@@ -87,12 +89,119 @@
                                 This page is a collection of my thoughts on various topics, some might be taken from papers that I read,
                                 some might be my own ideas, and some might be inspired by popcasts that I listened to. Read at your own risk (of being bored lol).
                             </p>
+
+                            <br>
+                            <br>
+                            <h2 class="is-size-4 mt-5 is-uppercase has-text-weight-semibold">Notes</h2>
+                            <p>
+
+                                Notes from <a href="https://www.youtube.com/watch?v=orDKvo8h71o">this lecture</a> by Hyung Won Chung.
+                                Great lecture, I realize that I approached AI from a wrong perspective. I pay too much attention to details,
+                                and I forget the big picture. That's possibly why I always have a hard time choosing a research direction, 
+                                and always eventually end up with a direction that solves a small problem of AI. Who cares about papers
+                                that just solve a specific problem in the age of LLMs? I did not advance the field! (atleast that's what I think).
+                                My last 2 papers solve a problem of BERTs, now 
+                                <a href="https://www.yitay.net/blog/model-architecture-blogpost-encoders-prefixlm-denoising">BERTs are deprecated</a>.
+                                Okay, enough of my whining, let's get to the point.
+                            </p>
+                            <br>
+                            <p>
+                                AI is advancing so fast, new developments are coming out every day.
+                                It is hard to keep up with all the latest papers and models.
+                                When things are going too fast, all we need to do is study the change itself. 
+                                We do not have time and energy to catch up with all the latest developments. We just need
+                                to study the driving force behind the change. 
+                            </p>
+                            <div class="card">
+                                <div class="card-content">
+                                  <p class="title">
+                                    Dominant driving force: Exponentially cheaper compute and scaling.
+                                  </p>
+                                </div>
+                              </div>
+                            <br>
+
+                            <p> AI research is not a fancy thing</p>
+                            <blockquote class="is-size-6">
+                                Past 70 years of entire AI research can be summarized into developing progressively <b>more general method</b>
+                                with <b>weaker modeling assumptions (inductive biases)</b>, and <b>add more data and compute</b> (scale up).
+                            </blockquote>
+                            <p>
+                                And that has been the recipe of entire AI research until now. Usually the more modeling assumptions, the less scalable the method is.
+                                More human input means less degree of freedom for the model to learn.
+                                An example of this is deep learning v.s. classical ML. Why is DL so much better than classical ML? It was more scalable.
+                                Because it has less structure, less inductive bias, and more degree of freedom.
+                                <br><br>
+                                With compute becoming cheaper (faster than we are becoming better researchers), the strucure of the model is becoming less and less important.
+                                That's why Decoder-only models (like ChatGPT, LLaMA, etc.) are so much better than Encoder-only models (like BERT, RoBERTa, etc.) 
+                                because they are the least structured.
+
+                            </p>
+                            <br><br>
+
+                            <blockquote style="background: #b8d6d7">
+                                <p class="title"  >
+                                    The less structure, the more scalable method is.
+                                </p>
+                            </blockquote>
+                            
+                    
+                            <p>
+                                So why don't we just use the least structured, end-to-end model? It's infeasible. Instead we should find
+                                an "optimal" structure to add given the level of compute we have. In other words, we should find the most
+                                end-to-end structure that just started to work. Later on, we should revisit the structures we added and remove those
+                                that hinder scalability.
+
+                            </p>
+
+                        </div>
+                        
+                        <div class="card mb-5">
+                            <div class="card-image">
+                                <div id="slider" class="carousel">
+                                    <div class="item-1">
+                                        <figure class="image is-16by9">
+                                            <img src="assets/notes/pc1.png" alt="Post 1, Image 1">
+                                        </figure>
+                                    </div>
+                                    <div class="item-2">
+                                        <figure class="image is-16by9">
+                                            <img src="assets/notes/pc2.png" alt="Post 1, Image 2">
+                                        </figure>
+                                    </div>
+                                    <div class="item-3">
+                                        <figure class="image is-16by9">
+                                            <img src="assets/notes/pc3.png" alt="Post 1, Image 3">
+                                        </figure>
+                                    </div>
+                                    <div class="item-4">
+                                        <figure class="image is-16by9">
+                                            <img src="assets/notes/pc4.png" alt="Post 1, Image 4">
+                                        </figure>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/js/bulma-carousel.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the carousel inside the first post
+        bulmaCarousel.attach('#slider', {
+            slidesToScroll: 1,
+            slidesToShow: 1, // Show only one image at a time
+            loop: false,      // Instagram doesn't loop by default
+            pagination: true, // Show dots like Instagram
+            navigation: true, // Show arrows (optional, Instagram uses swipe)
+            navigationKeys: true, // Allow keyboard navigation
+            // Add more options as needed
+        });
     
-        <!-- <div id="footer"></div> -->
+        // If you had more posts with carousels, initialize them too:
+        // bulmaCarousel.attach('#post2-carousel', { ... });
+        });
+    </script>
     </body>
 </html>
