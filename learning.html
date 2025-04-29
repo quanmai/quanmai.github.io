@@ -186,6 +186,17 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <h2>My self-reflect</h2>
+                            <p>
+                                My works on Boolean query understanding introduced a lot of inductive bias to the model.
+                                In the <a href="https://arxiv.org/abs/2503.01753" target="_blank">BoolAttn</a> work, I made a lot of hypotheses, ranging from
+                                Cue detection to predefined attention score modification mechanism.
+                                I had no other choice, and honestly that was the best I could do at that time.
+                                The datasets are limited, scaling the models may cause overfitting.
+                                However, BoolAttn is equipped with explainability, and it is a good start for future works.
+                                - Quan, Apr 2025.
+                            </p>
                         
                     </div>
                 </div>
@@ -201,7 +212,7 @@
             loop: false,      // Instagram doesn't loop by default
             pagination: true, // Show dots like Instagram
             navigation: true, // Show arrows (optional, Instagram uses swipe)
-            navigationKeys: true, // Allow keyboard navigation
+            // navigationKeys: true, // Allow keyboard navigation
             // Add more options as needed
         });
     
