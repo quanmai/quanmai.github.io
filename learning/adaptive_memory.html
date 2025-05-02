@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quan Mai</title>
+        <link rel="stylesheet" href="../css/bulma.css">
+        <link rel="stylesheet" href="../css/mine.css">
+        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons/css/all.min.css" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <div id="navbar"></div>
+        <!-- <div id="footer"></div> -->
+        <script>
+            $(function() {
+                // $("#footer").load("footer.html");
+                // $("#about").load("about.html");
+                $("#navbar").load("../navbar.html");
+            });
+        </script>
+
+        <!-- <style>
+            body {
+                counter-reset: section;
+            }
+            h2 {
+                counter-reset: subsection;
+            }
+            h2::before {
+                counter-increment: section;
+                content: counter(section) ". ";
+                font-weight: bold;
+            }
+            h3::before {
+                counter-increment: subsection;
+                content: counter(section) "." counter(subsection) " ";
+                font-weight: bold;
+            }
+        </style> -->
+
+    </head>
+
+    <body>
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label p-2">But why</p>
+                        <ul class="menu-list">
+                            <li><a href="../learning.html">Because...</a></li>
+                        </ul>
+                    <p class="menu-label">Writings</p>
+                        <ul class="menu-list">
+                            <li><a href="diffusion.html">Diffusion Models</a></li>
+                            <li><a href="sculptor.html">Diffusion as a Manifold Sculptor</a></li>
+                            <li><a href="transformer.html">Transformers</a></li>
+                            <li><a class="is-active" href="">Adaptive Memory Retrieval in LLM Agents</a></li>
+                        </ul>
+                    <p class="menu-label">Paper Summary</p>
+                    <ul class="menu-list">
+                        <li><a href="memgpt.html">MemGPT</a></li>
+                    </ul>
+                </aside>
+
+            </div>
+            <section class="section">
+                <div class="container">
+                    <div class="column is-7 is-offset-1">
+                        <div class="content">
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Adaptive Memory Retrieval in LLM Agents: Integrating Context and Goals</h1>
+                            <p class="has-text-centered">
+                                Google Gemini, Quan Mai.
+                            </p>
+                            <h2>Beyond Semantic Similarity - The Need for Adaptive Retrieval</h2>
+                            <p>
+                                The advent of Large Language Models (LLMs) has catalyzed significant progress in artificial intelligence, particularly in the development of autonomous agents capable of complex reasoning, planning, and interaction with dynamic environments. A cornerstone of these agentic capabilities is memory – the mechanism by which agents retain, recall, and utilize past information to inform future actions and decisions. Unlike static LLMs, which typically operate in single-turn, stateless interactions, LLM-based agents are distinguished by their capacity for self-evolution and engagement in long-term, complex interactions with their environment <a href="#ref1" id="citation1"><sup>[1]</sup></a>. This ability fundamentally relies on memory systems that support continuous learning, adaptation, and the maintenance of context over extended periods <a href="#ref4" id="citation4"><sup>[4]</sup></a>. Effective memory allows agents to provide contextually rich responses, mitigate hallucinations by grounding outputs in stored facts (a principle shared with Retrieval-Augmented Generation, or RAG), personalize interactions based on user history, and adapt their behavior over time <a href="#ref6" id="citation6"><sup>[6]</sup></a>. Furthermore, memory is indispensable for maintaining behavioral consistency and adhering to predefined roles or personas, especially in simulation environments <a href="#ref2" id="citation2"><sup>[2]</sup></a>. Consequently, memory is not merely an add-on module but a foundational component that differentiates truly autonomous agents from their precursor LLMs <a href="#ref1" id="citation1"><sup>[1]</sup></a>.
+                                <br>
+                                Despite the recognized importance of memory, current retrieval mechanisms employed by many LLM agents often fall short of the requirements for sophisticated autonomous behavior. A prevalent approach, particularly within RAG frameworks, involves retrieving information from a memory store (e.g., a vector database) based on semantic similarity, typically calculated using k-Nearest Neighbors (k-NN) on vector embeddings derived from the query and memory entries <a href="#ref8" id="citation8"><sup>[8]</sup></a>. While effective for augmenting LLM knowledge with external facts, this method suffers from significant limitations when applied to dynamic agent scenarios. Primarily, pure semantic similarity retrieval is inherently context-agnostic. It fails to account for the agent's current operational state, the specific sub-task it is attempting to solve, the nuances accumulated over the interaction history, or, crucially, the underlying purpose for which the information is being sought within a broader reasoning or planning process.
+                                <br>
+                                This lack of contextual and goal-oriented sensitivity leads to several practical problems. Agents may retrieve information that is semantically related to the query but irrelevant to the immediate task or context, introducing noise and potentially derailing the reasoning process <a href="#ref10" id="citation10"><sup>[10]</sup></a>. This issue is exacerbated in scenarios involving cross-domain knowledge or diverse experiential memories, where semantic overlap alone is a poor indicator of true relevance <a href="#ref10" id="citation10"><sup>[10]</sup></a>. Moreover, reliance on fixed retrieval operations and predefined memory structures hinders 
+                                the agent's ability to adapt to novel situations or generalize across different tasks and environments, particularly those requiring long-term interaction and flexible knowledge organization <a href="#ref8" id="citation8"><sup>[8]</sup></a>. The rigidity of these systems contrasts sharply with the dynamic and adaptive nature of memory recall observed in biological intelligence.
+                                <br>
+                                Addressing these shortcomings necessitates a paradigm shift towards Adaptive Retrieval. This concept moves beyond static relevance metrics like vector similarity to encompass retrieval mechanisms that dynamically adjust what information is retrieved and how it is prioritized based on the agent's evolving context and objectives. Adaptive retrieval is characterized by two key properties:
+                                <ul>
+                                    <li>
+                                        <b>Context-Awareness:</b> The retrieval process must be sensitive to the multifaceted context in which the agent operates. This includes the agent's internal state (beliefs, goals), the history of interactions, the current state of the external environment, and the specifics of the ongoing task <a href="#ref12" id="citation12"><sup>[12]</sup></a>. The system must possess an understanding of the agent's current "situation."
+                                    </li>
+                                    <li>
+                                        <b>Goal-Drivenness:</b> Retrieval must be tightly integrated with the agent's planning and reasoning faculties. Information should be sought and prioritized based on its utility for achieving the current sub-goal, evaluating potential actions, resolving planning uncertainties, or facilitating reflection <a href="#ref15" id="citation15"><sup>[15]</sup></a>. The system must understand "why" information is needed at a particular step.
+                                    </li>
+                                </ul>
+                                The push towards adaptive retrieval is not arbitrary but arises directly from the recognized deficiencies of current systems. Surveys and analyses consistently highlight limitations such as poor memory organization, context-insensitivity, and structural rigidity <a href="#ref1" id="citation1"><sup>[1]</sup></a>. Concurrently, emerging research proposes solutions like context-dependent indexing <a href="#ref12" id="citation12"><sup>[12]</sup></a>, goal-aware learning objectives <a href="#ref15" id="citation15"><sup>[15]</sup></a>, and the integration of memory with planning modules <a href="#ref18" id="citation18"><sup>[18]</sup></a>. This alignment between identified problems and proposed solutions indicates a clear and necessary research trajectory aimed at overcoming the limitations of simplistic retrieval.
+                                <br>
+                                Furthermore, the development of adaptive retrieval mechanisms is arguably a prerequisite for realizing the full potential of LLM-based agents. While basic RAG enhances the knowledge available to an LLM, it does not inherently bestow the characteristics of true agency – the ability to learn from experience, plan towards long-term goals, and adapt behavior dynamically within an environment. Adaptive retrieval provides the crucial link, enabling memory to be deeply integrated with planning <a href="#ref18" id="citation18"><sup>[18]</sup></a>, learning <a href="#ref22" id="citation22"><sup>[22]</sup></a>, contextual adaptation <a href="#ref12" id="citation12"><sup>[12]</sup></a>, and the capacity for self-evolution <a href="#ref2" id="citation2"><sup>[2]</sup></a>. It transforms the memory system from a passive repository of information into an active, dynamic component of the agent's cognitive architecture, essential for navigating the complexities of real-world tasks.
+                            </p>
+                            <h2>Context-Aware Retrieval Strategies</h2>
+                            <p>
+                                To implement adaptive retrieval, a nuanced understanding of "context" as it pertains to LLM agents is essential. Context is not a monolithic entity but rather a composite of various dynamic factors that influence the agent's state and information needs. Key facets of context include:
+                                <ul>
+                                    <li>
+                                        <b>Internal State:</b> The agent's current mental landscape, encompassing its active goals, beliefs about the world, the ongoing reasoning trace or plan, and knowledge accumulated thus far.
+                                    </li>
+                                    <li>
+                                        <b>Interaction History:</b> The sequence of preceding events, including dialogue turns with users or other agents, feedback received, and actions previously executed by the agent <a href="#ref4" id="citation4"><sup>[4]</sup></a>. This provides temporal grounding and conversational flow.
+                                    </li>
+                                    <li>
+                                        <b>Environmental State:</b> The current status of the external world the agent interacts with, whether physical or virtual. This includes the state of objects, their locations, properties, and relationships with other relevant entities <a href="#ref12" id="citation12"><sup>[12]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>Task Context:</b> The specific objective the agent is currently pursuing, including the overall goal, the immediate sub-goal within a plan, task-specific constraints, and relevant domain knowledge <a href="#ref12" id="citation12"><sup>[12]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>Temporal Context:</b> An understanding of the sequence, duration, and timing of events, enabling the recognition of long-range dependencies and causal relationships within the interaction history <a href="#ref23" id="citation23"><sup>[23]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>User Context:</b> Information pertaining to the user interacting with the agent, such as their profile, stated or inferred preferences, history of interactions, and the likely intent behind their current query <a href="#ref3" id="citation3"><sup>[3]</sup></a>.
+                                    </li>
+                                </ul>
+
+                                Leveraging these diverse contextual facets requires specific mechanisms that go beyond simple query-document similarity. Several strategies are emerging:
+                                <ul>
+                                    <li>
+                                        <b>Dynamic Query Formulation/Modulation:</b> Instead of using a raw query, the agent can dynamically construct or modify the retrieval query by incorporating relevant contextual elements. For example, appending the current task step identifier, key entities mentioned recently in the dialogue, or the agent's current location to the base query before searching the memory.
+                                    </li>
+                                    <li>
+                                        <b>Context-Conditional Memory Access:</b> Structuring the memory store itself based on contextual dimensions. For instance, partitioning memories by task type, user ID, or environmental state, and restricting the search space to only the relevant partition(s) based on the current context <a href="#ref12" id="citation12"><sup>[12]</sup></a>. This can significantly improve efficiency and relevance.
+                                    </li>
+                                    <li>
+                                        <b>Re-ranking Based on Context:</b> Employing a two-stage process. First, retrieve a larger candidate set using a broader relevance metric (like semantic similarity). Then, re-rank these candidates using a more fine-grained model that explicitly scores relevance based on the current, detailed context <a href="#ref25" id="citation25"><sup>[25]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>Temporal Filtering/Weighting:</b> Explicitly using temporal information. This could involve prioritizing more recent memories, retrieving memories within a specific time window relevant to the query, or down-weighting memories associated with significantly different past contexts <a href="#ref23" id="citation23"><sup>[23]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>State-Aware Retrieval:</b> Directly using the agent's internal state representation (e.g., the current node in a planning graph, the agent's belief state) as part of the retrieval key or filtering criteria, ensuring retrieved information aligns with the agent's current cognitive focus.
+                                    </li>
+                                </ul>
+
+                                Several recent research efforts exemplify these strategies:
+                                <ul>
+                                    <li>
+                                        <b>CDMem (Context-Dependent Memory):</b> This framework draws inspiration from human cognitive psychology, particularly context-dependent recall. It employs multistage encoding (expert, short-term, long-term) to capture knowledge at different levels of abstraction. Crucially, it utilizes a graph-structured indexing mechanism that is context-dependent, allowing the agent to identify the current task and environment type and use these as key cues to efficiently retrieve the most relevant multilevel knowledge (exemplars, task experiences, insights) <a href="#ref12" id="citation12"><sup>[12]</sup></a>. This directly implements context-conditional access and highlights retrieval tailored to task and environment types.
+                                    </li>
+                                    <li>
+                                        <b>AUTOGUIDE:</b> This approach focuses on leveraging offline experiences to generate context-aware guidelines. It comprises modules to identify the context of a given trajectory segment and extract actionable guidelines applicable within that specific context. At test time, the agent identifies its current context and retrieves the corresponding pertinent guidelines to inform its decision-making <a href="#ref13" id="citation13"><sup>[13]</sup></a>. This demonstrates retrieving contextualized procedural knowledge, rather than just raw factual memories.
+                                    </li>
+                                    <li>
+                                        <b>CAPEAM (Context-Aware Planning and Environment-Aware Memory):</b> Designed for embodied agents performing interactive instruction following, CAPEAM emphasizes environmental context. It first predicts task-relevant objects (termed 'context') from instructions and then plans detailed actions conditioned on this context. Its 'Environment-Aware Memory' stores spatial information and object states, explicitly tracking changes in the environment to inform subsequent planning and action execution <a href="#ref14" id="citation14"><sup>[14]</sup></a>. This underscores the critical role of grounding retrieval and planning in the physical (or virtual) world state.
+                                    </li>
+                                    <li>
+                                        <b>CALM (Context-Aware Language Models):</b> This work tackles goal-oriented dialogue by formulating it as a Partially Observable Markov Decision Process (POMDP). Through task relabeling techniques and auxiliary training objectives, CALM fine-tunes language models to be more sensitive to the dialogue task context. While primarily focused on generation, this implicitly influences what information (from the dialogue history or its internal state) the model attends to, leading to improved task success <a href="#ref15" id="citation15"><sup>[15]</sup></a>. It shows that context-awareness can be embedded within the model's learned behavior.
+                                    </li>
+                                    <li>
+                                        <b>LoCoMo Benchmark:</b> While an evaluation framework rather than a retrieval mechanism, LoCoMo focuses on assessing very long-term conversational memory. It generates long dialogues grounded in personas and temporal event graphs, proposing tasks like QA over the history and event summarization. Its findings indicate challenges for current models in understanding long-range temporal and causal dynamics <a href="#ref23" id="citation23"><sup>[23]</sup></a>. This highlights the temporal dimension as a crucial, and currently difficult, aspect of context for retrieval systems to handle effectively.
+                                    </li>
+                                </ul>
+                                The diversity of these approaches reveals that "context" is indeed multifaceted. Effective adaptive retrieval systems will likely need to integrate information from multiple contextual sources – task requirements <a href="#ref12" id="citation12"><sup>[12]</sup></a>, trajectory states <a href="#ref13" id="citation13"><sup>[13]</sup></a>, environmental specifics <a href="#ref14" id="citation14"><sup>[14]</sup></a>, dialogue history <a href="#ref15" id="citation15"><sup>[15]</sup></a>, and temporal dynamics <a href="#ref23" id="citation23"><sup>[23]</sup></a> – potentially weighting their importance dynamically based on the immediate information need.
+                                <br>
+                                Furthermore, a key pattern emerging from systems like CDMem, AUTOGUIDE, and CAPEAM <a href="#ref12" id="citation12"><sup>[12]</sup></a> is that effective contextualization often begins before retrieval. These systems emphasize encoding information (e.g., multi-stage encoding in CDMem), structuring memory (e.g., context-dependent indexing in CDMem, spatial memory in CAPEAM), or pre-processing knowledge (e.g., generating context-conditional guidelines in AUTOGUIDE) in a context-aware manner. This suggests that adaptive retrieval is not solely a read-time operation performed on a generic memory store. Instead, the memory formation and organization processes must be designed with contextual dimensions in mind from the outset to enable efficient and accurate context-aware retrieval later. Applying contextual filters at retrieval time to a poorly structured or context-agnostic memory is likely to be less effective and efficient.
+                            </p>
+
+                            <h2>Goal-Driven Retrieval for Reasoning and Planning</h2>
+                            <p>
+                                Beyond understanding the current situation (context-awareness), adaptive retrieval must also understand why information is needed (goal-drivenness). Retrieval operations should be purposeful, directly serving the agent's active reasoning processes or planning objectives <a href="#ref16" id="citation16"><sup>[16]</sup></a>. The utility of retrieved information is paramount; it should help the agent progress towards its goals. Examples of goal-driven retrieval include accessing relevant procedural knowledge (skills) when considering a planning step <a href="#ref4" id="citation4"><sup>[4]</sup></a>, finding records of past attempts at solving similar sub-problems <a href="#ref26" id="citation26"><sup>[26]</sup></a>, recalling the observed consequences of previous actions to evaluate current options <a href="#ref14" id="citation14"><sup>[14]</sup></a>, or fetching specific facts needed to verify the feasibility or correctness of a planned action <a href="#ref18" id="citation18"><sup>[18]</sup></a>.
+                                <br>
+                                Several techniques can facilitate this tight coupling between retrieval and agent goals:
+                                <ul>
+                                    <li>
+                                        <b>Planning-Conditional Retrieval:</b> The agent's current state within its planning process (e.g., the current node in a Monte Carlo Tree Search 27, the active sub-goal in a hierarchical plan) serves as a key component of the retrieval query. This allows fetching information highly relevant to the immediate planning decision, such as past experiences executing the current sub-goal, applicable skills, or relevant world knowledge about the entities involved <a href="#ref18" id="citation18"><sup>[18]</sup></a>.
+                                    </li>
+                                    <li>
+                                       <b>Retrieval for Action Selection:</b> Querying memory specifically to aid in choosing among candidate actions. This might involve retrieving memories of the outcomes of similar actions taken in the past, or fetching predictive models or rules relevant to the current state-action pair.
+                                    </li>
+                                    <li>
+                                        <b>Retrieval for Reflection/Self-Correction:</b> When an agent encounters failure, uncertainty, or suboptimal performance, it can trigger retrieval aimed at understanding the error and improving future performance. This involves accessing memories of past failures, successful alternatives in similar situations, or explicit feedback received previously <a href="#ref2" id="citation2"><sup>[2]</sup></a>.
+
+                                    </li>
+                                    <li>
+                                        <b>Knowledge Extraction for Goals:</b> Retrieval can be used not just to recall facts but to actively construct knowledge structures relevant to achieving goals. For example, retrieving interaction data to build or refine a predictive world model represented as code <a href="#ref20" id="citation20"><sup>[20]</sup></a>.
+
+                                    </li>
+                                    <li>
+
+                                        <b>Retrieving Demonstrations/Insights:</b> Accessing records of past successful trajectories or previously derived natural language insights (summaries of successful strategies or causal relationships) to use as in-context examples or guidance for the LLM's current decision-making process <a href="#ref22" id="citation22"><sup>[22]</sup></a>.
+                                    </li>
+                                </ul>
+                                Research incorporating these goal-driven principles includes:
+                                <ul>
+                                    <li>
+                                        
+                                        <b>Memory-Driven Planners (e.g., EvoAgent):</b> These architectures explicitly integrate memory access into the planning loop. EvoAgent, for instance, uses an LLM planner that leverages both working memory (current state) and interaction memory (history) to decompose long-horizon tasks into executable sub-tasks, directly incorporating the agent's state and past experiences into the planning process <a href="#ref18" id="citation18"><sup>[18]</sup></a>. Retrieval is thus intrinsic to plan generation.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>LLM as Planner/Reward (Survey):</b> A survey categorizing the roles of Foundation Models (FMs) in Reinforcement Learning (RL) identifies "LLM/VLM as Planner" as a key role, where the FM generates sub-goals or high-level plans <a href="#ref19" id="citation19"><sup>[19]</sup></a>. This implicitly requires memory retrieval capabilities to support the LLM's planning function, providing it with necessary domain knowledge or past planning experiences.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>WorldCoder:</b> This agent learns a world model represented as a Python program by interacting with the environment. Its learning objective incorporates optimism in the face of uncertainty, encouraging exploration directed towards states that could lead to reward according to plausible world models <a href="#ref20" id="citation20"><sup>[20]</sup></a>. While retrieval isn't explicit, the goal-driven learning objective shapes the interaction data gathered (and thus implicitly stored), prioritizing experiences relevant to understanding reward-achieving dynamics. The memory (interaction history) serves the goal of building a useful, goal-relevant world model.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>ExRAP (Exploratory Retrieval-Augmented Planning):</b> Designed for continual instruction following in dynamic environments, ExRAP integrates exploration (information gathering) with LLM-based planning. It builds and maintains an environmental context memory to ground the planning process. Retrieval serves the goal of ensuring the planner has access to up-to-date, valid environmental context necessary for successful task execution <a href="#ref21" id="citation21"><sup>[21]</sup></a>.
+                                    </li>
+                                    <li>
+                                        
+                                        <b> ExpeL (Experiential Learning):</b> This agent framework emphasizes learning from autonomous interaction without parametric updates. ExpeL agents gather experiences across training tasks, extract natural language insights from them, and store both raw experiences and insights in memory. At inference time, the agent retrieves relevant past experiences (as demonstrations) and insights (as guidance) to inform its decision-making on new tasks <a href="#ref22" id="citation22"><sup>[22]</sup></a>. Retrieval is directly driven by the goal of leveraging past learning to solve the current problem effectively.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>CALM (Context-Aware Language Models):</b> Although primarily discussed for context-awareness, CALM's training objective is explicitly goal-aware (optimizing for task success in dialogue). The fine-tuning process encourages the model to generate responses (implicitly retrieving relevant information from its parameters or context) that lead towards successful task completion <a href="#ref15" id="citation15"><sup>[15]</sup></a>.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Case-Based Reasoning (CBR) Integration:</b> The proposal to integrate CBR principles with LLM agents directly embodies goal-driven retrieval <a href="#ref26" id="citation26"><sup>[26]</sup></a>. The core idea is to retrieve past cases (problem-solving episodes) that are most similar to the current problem (goal) and adapt the stored solution. Retrieval is explicitly driven by the need to find a relevant past solution strategy.
+                                    </li>
+                                </ul>
+                                A significant trend emerging from these advanced proposals <a href="#ref18" id="citation18"><sup>[18]</sup></a> is the deep integration of memory retrieval within the agent's core planning and reasoning cycle. Retrieval is often no longer a preliminary step to gather context before planning begins; instead, it becomes an integral part of evaluating states, selecting actions, generating sub-goals, or reflecting on outcomes. This tight coupling suggests that the traditional boundaries between perception, memory access, reasoning, and planning are becoming increasingly blurred in sophisticated agent architectures. Retrieval is evolving from a mechanism for accessing facts to one for accessing actionable knowledge, relevant experiences, and useful procedural guidance, directly participating in the agent's cognitive flow.
+                                <br>
+                                Furthermore, goal-driven retrieval is not a monolithic function but serves distinct purposes at different stages of the problem-solving process. Initial plan generation might require retrieving high-level strategies or relevant skills <a href="#ref18" id="citation18"><sup>[18]</sup></a>. Action selection might necessitate retrieving predictions about action outcomes based on past similar situations <a href="#ref20" id="citation20"><sup>[20]</sup></a>. Maintaining plan validity in dynamic environments requires retrieving up-to-date contextual information <a href="#ref21" id="citation21"><sup>[21]</sup></a>. Learning and improvement depend on retrieving records of past successes and failures for reflection <a href="#ref22" id="citation22"><sup>[22]</sup></a>. Adapting known solutions to new problems involves retrieving analogous past cases <a href="#ref26" id="citation26"><sup>[26]</sup></a>. A versatile and effective agent will likely need to employ different goal-driven retrieval strategies dynamically, tailoring the query and the type of information sought to the specific needs of its current cognitive operation, all while progressing towards its overarching objectives.
+                            
+                            </p>
+
+                            <h2>Enabling Architectures and Techniques for Adaptive Retrieval</h2>
+                            <p>
+                                Implementing adaptive retrieval requires underlying memory architectures and techniques capable of supporting dynamic, context-sensitive, and goal-oriented access. Several architectural paradigms and specific techniques show promise:
+
+                                <h3>1. Associative Memory Principles (Inspired by CAMELoT)</h3>
+                                <ul>
+                                    <li>
+                                        <b>Core Mechanism:</b> CAMELoT <a href="#ref28" id="citation28"><sup>[28]</sup></a> utilizes an associative memory module integrated with a frozen LLM. It stores consolidated key-value representations of past tokens. Retrieval (Read operation) identifies the memory slot with the highest key similarity (e.g., cosine similarity) to the current token's key. The Write operation involves dynamically managing memory through:
+                                        <ul>
+                                            <li>
+                                                <i>Consolidation:</i> Averaging keys and values of incoming tokens with highly similar existing memory slots (similarity > threshold R).
+                                                
+                                            </li>
+                                            <li>
+                                                <i>Novelty:</i> Storing tokens with low similarity to existing memories in new slots, replacing the oldest slot if memory is full.
+                                            </li>
+                                            <li>
+                                                <i>Recency:</i> Tracking the age of memory slots and prioritizing the eviction of the least recently used/updated slots when novelty occurs.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Adaptivity Potential:</b> While CAMELoT's primary goal is extending context length via similarity-based retrieval, its underlying principles offer a foundation for adaptivity. The consolidation, novelty, and recency mechanisms create a dynamic memory substrate. Adaptivity could be enhanced by making the similarity threshold R context-dependent (e.g., requiring higher similarity for familiar contexts), biasing retrieval towards slots relevant to the current goal, or modifying the recency-based eviction strategy based on task importance. The training-free nature of CAMELoT is advantageous for integration with pre-trained LLMs <a href="#ref28" id="citation28"><sup>[28]</sup></a>, and its demonstrated effectiveness even with small LLM context windows is notable <a href="#ref28" id="citation28"><sup>[28]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>Challenges:</b> The memory has a finite capacity, potentially limiting performance on extremely long or diverse histories <a href="#ref28" id="citation28"><sup>[28]</sup></a>. Performance might be sensitive to hyperparameter tuning (e.g., threshold R, memory size) <a href="#ref28" id="citation28"><sup>[28]</sup></a>. The core retrieval is still based on semantic similarity, requiring extensions for explicit goal or complex context integration
+                                        
+                                    </li>
+                                    
+                                </ul>
+                                <h3>2. Graph-Based Memory Networks:</h3>
+                                <ul>
+                                    <li>
+                                        
+                                        <b>Core Mechanism:</b> Represent memories (e.g., experiences, observations, concepts, facts) as nodes in a graph, with edges representing relationships such as temporal order, causality, semantic similarity, or task relevance <a href="#ref4" id="citation4"><sup>[4]</sup></a>. Retrieval involves graph traversal algorithms (e.g., BFS, DFS <a href="#ref27" id="citation27"><sup>[27]</sup></a>) or structured queries over the graph structure.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Adaptivity Potential:</b> Graphs explicitly encode relationships, enabling retrieval based on structural patterns, causal links, or contextual proximity. For example, retrieving all nodes connected to a 'current task' node or tracing causal chains backward from an observed effect. This structure naturally supports multi-hop reasoning across memories <a href="#ref23" id="citation23"><sup>[23]</sup></a>. CDMem leverages graph-based indexing for context-dependent retrieval <a href="#ref12" id="citation12"><sup>[12]</sup></a>.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Challenges:</b> Constructing and maintaining complex graphs can be computationally expensive. Predefined graph schemas might limit flexibility and adaptability unless mechanisms for dynamic schema evolution are incorporated <a href="#ref8" id="citation8"><sup>[8]</sup></a>. The scalability of graph traversal and query operations can be a bottleneck for very large memory graphs.
+                                    </li>
+                                </ul>
+                                <h3>3. Agentic and Evolutionary Memory Systems:</h3>
+                                <ul>
+                                    <li>
+                                        
+                                        <b>Core Mechanism:</b> These systems treat memory not as a static store but as a dynamic entity that is actively managed, organized, updated, and potentially evolved by the agent itself or a dedicated sub-agent <a href="#ref8" id="citation8"><sup>[8]</sup></a>. This can involve processes like automated linking of related memories, dynamic summarization or abstraction generation, and structural reorganization based on experience. Episodic memory frameworks propose mechanisms for single-shot learning of specific instances and their subsequent consolidation into broader knowledge <a href="#ref29" id="citation29"><sup>[29]</sup></a>.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Adaptivity Potential:</b> These systems are inherently adaptive by design. The memory structure and content continuously change based on the agent's interactions and potentially its goals. This allows for forging novel connections between memories and adapting the organizational schema as the agent learns and encounters new information <a href="#ref8" id="citation8"><sup>[8]</sup></a>. Such systems are well-suited for continual learning scenarios <a href="#ref29" id="citation29"><sup>[29]</sup></a>.
+                                    </li>
+                                    <li>
+                                        <b>Challenges:</b> Designing the rules or learning mechanisms for memory self-organization is highly complex. Ensuring stability and preventing undesirable emergent behaviors in the memory structure can be difficult. Evaluating the effectiveness and properties of such evolving memory systems poses significant challenges.
+                                    </li>
+                                    
+                                </ul>
+                                <h3>4. Hybrid Retrieval Models:</h3>
+                                <ul>
+                                    <li>
+                                        
+                                        <b>Core Mechanism:</b> Combine multiple retrieval strategies to leverage their respective strengths. This could involve running semantic search, keyword search, and graph queries in parallel and fusing the results, or employing a multi-stage pipeline (e.g., initial broad retrieval via semantic similarity followed by fine-grained re-ranking based on goal relevance or contextual fit) <a href="#ref25" id="citation25"><sup>[25]</sup></a>.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Adaptivity Potential:</b> Offers flexibility by allowing the agent to dynamically select or weight different retrieval components based on the current context, goal, or query characteristics. For instance, relying more on semantic similarity for broad exploration versus graph traversal for precise relational queries.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Challenges:</b> Increases the overall complexity of the system design. Requires careful tuning of how different retrieval strategies are combined or weighted. Potential for increased latency due to multiple retrieval operations.
+                                    </li>
+                                </ul>
+                                <h3>5. Iterative and Multi-Step Retrieval:</h3>
+                                <ul>
+                                    <li>
+                                        
+                                        <b>Core Mechanism:</b> Instead of a single retrieval operation per information need, the agent engages in an iterative process. It might issue an initial query, analyze the results, refine the query based on the findings or intermediate reasoning steps, and issue subsequent queries until the information need is satisfied <a href="#ref25" id="citation25"><sup>[25]</sup></a>.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Adaptivity Potential:</b> Allows the agent to adapt its search strategy on the fly based on the information retrieved. This is particularly useful for complex information needs that cannot be precisely formulated in a single query, enabling progressive refinement and exploration of the memory space.
+                                    </li>
+                                    <li>
+                                        
+                                        <b>Challenges:</b> Can significantly increase retrieval latency. Requires sophisticated mechanisms for managing the iterative process, formulating follow-up queries, and determining appropriate stopping criteria.
+                                    </li>
+                                </ul>
+                                <h3>6. Case-Based Reasoning (CBR) Integration:</h3>
+                                <ul>
+                                    <li>
+                                        <b>Core Mechanism:</b> Explicitly store past problem-solving episodes ('cases') in memory. When faced with a new problem, retrieve the most similar past case(s) based on problem features. Adapt the solution from the retrieved case(s) to fit the specifics of the current situation <a href="#ref26" id="citation26"><sup>[26]</sup></a>.
+                                        
+                                    </li>
+                                    <li>
+                                        <b>Adaptivity Potential:</b> Retrieval is directly driven by similarity to the current goal/problem. The adaptation step explicitly incorporates the current context. Leverages concrete, holistic past experiences rather than fragmented memories.
+                                        
+                                    </li>
+                                    <li>
+                                        <b>Challenges:</b> Requires a well-defined structure for cases and effective similarity metrics. Designing robust adaptation rules can be complex and domain-specific. May struggle with problems that are fundamentally different from any previously encountered case.
+                                        
+                                    </li>
+                                    
+                                </ul>
+                                The existence of such a diverse range of architectural proposals <a href="#ref4" id="citation4"><sup>[4]</sup></a> strongly suggests that there is no single "best" architecture for adaptive retrieval. The optimal choice likely depends heavily on the specific requirements of the agent and its tasks. For instance, associative memories might excel in scenarios prioritizing efficient context extension for language modeling <a href="#ref28" id="citation28"><sup>[28]</sup></a>, while graph-based memories may be superior for tasks requiring complex relational reasoning <a href="#ref4" id="citation4"><sup>[4]</sup></a>, and agentic systems might be necessary for environments demanding high degrees of adaptability and continual learning <a href="#ref8" id="citation8"><sup>[8]</sup></a>. Hybrid approaches <a href="#ref25" id="citation25"><sup>[25]</sup></a> may offer the best trade-offs in many practical applications.
+                                <br>
+                                Furthermore, focusing solely on the retrieval (Read) operation provides an incomplete picture. The mechanisms for writing, updating, consolidating, and forgetting information (Write operations) are equally critical for maintaining a memory store that remains useful and relevant over time <a href="#ref2" id="citation2"><sup>[2]</sup></a>. The performance of CAMELoT, for example, hinges significantly on its consolidation, novelty detection, and recency-based eviction rules <a href="#ref28" id="citation28"><sup>[28]</sup></a>. Agentic memory systems explicitly incorporate memory evolution as a core feature <a href="#ref8" id="citation8"><sup>[8]</sup></a>. Episodic memory frameworks involve consolidation processes <a href="#ref29" id="citation29"><sup>[29]</sup></a>. Surveys consistently identify memory operations and management as key design dimensions <a href="#ref2" id="citation2"><sup>[2]</sup></a>. This persistent emphasis underscores that effective adaptive retrieval is inseparable from effective memory maintenance. An adaptive retrieval mechanism, no matter how sophisticated, cannot perform well if the underlying memory is cluttered with outdated, irrelevant, or poorly organized information. The Write side of the memory equation is fundamental to enabling the Read side.
+                            </p>
+                            
+                            <h2>Challenges and Future Research Frontiers</h2>
+                            <p>
+                                While the move towards adaptive retrieval holds immense promise, significant challenges must be addressed to realize its full potential. These challenges span efficiency, memory management, evaluation, security, learning, and interpretability.
+                                <ul>
+                                    <li>
+                                       <b> Scalability, Efficiency, and Latency:</b> Adaptive retrieval mechanisms, particularly those involving complex computations like graph traversal <a href="#ref12" id="citation12"><sup>[12]</sup></a>, iterative search <a href="#ref25" id="citation25"><sup>[25]</sup></a>, or agentic self-organization <a href="#ref8" id="citation8"><sup>[8]</sup></a>, can impose substantial computational costs and increase response latency. Finding the right balance between the expressiveness and adaptivity of the retrieval mechanism and the real-time performance requirements of interactive agents is a critical engineering challenge. Memory size itself remains a factor influencing retrieval speed and cost <a href="#ref28" id="citation28"><sup>[28]</sup></a>. Techniques for optimizing complex retrieval operations and efficient memory indexing are crucial.
+                                    </li>
+                                    <li>
+                                        <b>Dynamic Memory Management:</b> Maintaining a useful memory store over long periods requires robust mechanisms beyond simple storage.
+                                        <ul>
+                                            <li>
+                                                <i>Consolidation and Abstraction:</i> While CAMELoT offers a basic averaging approach <a href="#ref28" id="citation28"><sup>[28]</sup></a>, developing more sophisticated methods to consolidate experiences, abstract knowledge, and generalize from specific memories without losing critical details is an open research area.
+                                            </li>
+                                            <li>
+                                                <i>Principled Forgetting:</i> Agents operating in dynamic environments will accumulate vast amounts of information. Effective forgetting mechanisms are essential to prevent memory overload and maintain retrieval efficiency. Simple recency-based eviction <a href="#ref28" id="citation28"><sup>[28]</sup></a> may discard important but infrequently accessed information. Developing strategies for selective forgetting based on relevance, utility, or redundancy is crucial <a href="#ref12" id="citation12"><sup>[12]</sup></a>.
+                                            </li>
+                                            <li>
+                                                <i>Consistent and Efficient Updates:</i> Updating memory representations, especially in structured formats like graphs or dynamically evolving agentic systems, must be done efficiently and consistently <a href="#ref8" id="citation8"><sup>[8]</sup></a>. Handling conflicting information from different sources or time points, and enabling real-time updates without disrupting ongoing operations, remain difficult problems <a href="#ref30" id="citation30"><sup>[30]</sup></a>.
+
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+
+                                        <b>Evaluation Methodologies</b>: Current methods for evaluating LLM agents often focus on overall task success <a href="#ref27" id="citation27"><sup>[27]</sup></a> or specific capabilities like tool use <a href="#ref5" id="citation5"><sup>[5]</sup></a>. However, evaluating the effectiveness of the retrieval component itself, particularly its adaptiveness, remains challenging. Standard retrieval metrics (e.g., precision, recall) may not capture whether the information retrieved was contextually appropriate or directly useful for the agent's specific goal at that moment. There is a pressing need for new benchmarks, tasks, and metrics specifically designed to assess the context-awareness and goal-relevance of memory retrieval in agent systems <a href="#ref1" id="citation1"><sup>[1]</sup></a>. Initiatives like LoCoMo targeting long-term interaction evaluation are steps in the right direction <a href="#ref23" id="citation23"><sup>[23]</sup></a>, but more focused evaluation of the retrieval mechanism's adaptivity is required to drive progress and enable rigorous comparison between different approaches. This evaluation gap hinders our ability to understand the true benefits and trade-offs of novel adaptive retrieval strategies.
+                                    </li>
+                                    <li>
+
+                                        <b>Security and Robustness:</b> As memory becomes more dynamic and integrated into agent decision-making, it also becomes a potential attack vector. Agents with compromised memory banks can be induced to produce harmful outputs or take dangerous actions <a href="#ref9" id="citation9"><sup>[9]</sup></a>. Adaptive retrieval systems, especially those involving learning <a href="#ref8" id="citation8"><sup>[8]</sup></a> or complex logic, might present larger attack surfaces than simpler semantic search. Adversaries could potentially inject malicious memories through interaction <a href="#ref33" id="citation33"><sup>[33]</sup></a> or manipulate the retrieval logic itself to surface harmful content at critical moments <a href="#ref9" id="citation9"><sup>[9]</sup></a>. Ensuring the robustness of memory formation (Write) and retrieval (Read) processes against noise, manipulation, and adversarial attacks is paramount for deploying agents safely <a href="#ref32" id="citation32"><sup>[32]</sup></a>. The potential for memory poisoning transforms security from a desirable feature into a fundamental requirement for trustworthy adaptive memory systems.
+                                    </li>
+                                    <li>
+
+                                        <b>Learning Adaptive Retrieval Policies:</b> An open question is how agents can learn to retrieve information adaptively. This could involve training a retrieval policy using reinforcement learning, where the agent learns to select queries or retrieval strategies that maximize task success or information gain. Meta-learning could enable agents to adapt their retrieval strategies quickly to new tasks or contexts. Learning must also consider the trade-off between the cost (latency, computation) and the potential benefit of retrieval.
+                                    </li>
+                                    <li>
+
+                                        <b>Explainability and Interpretability:</b> As retrieval mechanisms become more complex and adaptive, understanding why a particular piece of memory was retrieved becomes increasingly important for debugging, ensuring alignment with human values, and building trust. While some approaches like code-based world models offer a degree of interpretability <a href="#ref20" id="citation20"><sup>[20]</sup></a>, developing general methods for explaining the decisions of adaptive retrieval systems remains a challenge.
+                                    </li>
+
+                                </ul>
+                            </p>
+                            <h2>Conclusion: Towards More Intelligent Agent Memory</h2>
+                            <p>
+                                The limitations of current memory retrieval mechanisms, largely reliant on context-agnostic semantic similarity, represent a significant bottleneck in the development of truly autonomous and intelligent LLM-based agents. Simple vector search is insufficient for agents that must navigate complex, dynamic environments, learn from experience, and pursue long-term goals. The imperative is clear: future retrieval mechanisms must be <b>adaptive</b>, demonstrating both <b>context-awareness</b> – understanding the nuances of the current situation – and <b>goal-drivenness</b> – aligning retrieval with the agent's immediate reasoning and planning objectives.
+                                <br><br>
+                                This report has explored the landscape of adaptive retrieval, outlining the multifaceted nature of context and the various ways retrieval can be coupled with agent goals. We have examined emerging strategies, including dynamic query modulation, context-conditional memory access, planning-integrated retrieval, and retrieval for reflection. Furthermore, we reviewed diverse architectural paradigms poised to enable these strategies, ranging from associative memories like CAMELoT, structured graph-based networks, dynamic agentic and evolutionary systems, to hybrid, iterative, and case-based reasoning approaches. Each architecture presents unique strengths and weaknesses, suggesting that the optimal solution may be task-dependent or involve hybrid designs. The critical interplay between adaptive retrieval (Read) and dynamic memory management (Write, Update, Forget) has also been highlighted – effective recall depends fundamentally on effective memory maintenance.
+                                <br><br>
+                                Realizing the vision of adaptive memory requires confronting substantial challenges. Scalability, efficiency, and latency must be addressed to ensure practical deployment. Robust and principled methods for dynamic memory management, including consolidation and forgetting, are needed. Perhaps most critically, new evaluation methodologies are required to specifically measure the adaptiveness of retrieval, moving beyond simple task success metrics. Concurrently, the security implications of dynamic, persistent memory cannot be overlooked; designing robust and manipulation-resistant systems is essential for safety and trust. Future research should also focus on enabling agents to learn adaptive retrieval policies and on enhancing the interpretability of these complex systems. Inspiration from diverse fields, including cognitive science <a href="#ref2" id="citation2"><sup>[2]</sup></a> and computer systems architecture <a href="#ref16" id="citation16"><sup>[16]</sup></a>, will likely prove invaluable in this pursuit.
+                                <br><br>
+                                In conclusion, adaptive retrieval is not merely an incremental improvement over existing techniques; it represents a fundamental shift towards memory systems that actively participate in the cognitive processes of LLM agents. By enabling agents to access the right information, for the right reason, at the right time, context-aware and goal-driven retrieval is a crucial enabler for the next generation of AI systems – agents capable of more sophisticated learning, reasoning, planning, and interaction with the complexities of the real world. The development of these advanced memory capabilities is a vital step on the path towards more flexible, robust, and ultimately, more intelligent artificial agents.
+
+                            </p>
+                            <h2>References</h2>
+                            <ol>
+                                <li id="ref1">
+                                    Zeyu Zhang, Xiaohe Bo, Chen Ma, Rui Li, Xu Chen, Quanyu Dai, Jieming Zhu, Zhenhua Dong, Ji-Rong Wen,
+                                    "<i>A Survey on the Memory Mechanism of Large Language Model based Agents</i>," 
+                                    <a href="https://arxiv.org/abs/2404.13501" target="_blank">[arXiv:2404.13501]</a>  
+                                </li>
+                                <li id="ref2">
+                                    nuster1128/LLM_Agent_Memory_Survey - GitHub, accessed April 28, 2025,
+                                    "<i>A Survey on the Memory Mechanism of Large Language Model based Agents</i>,"
+                                    <a href="https://github.com/nuster1128/LLM_Agent_Memory_Survey" target="_blank">[GitHub]</a>
+                                </li>
+                                <li id="ref3">
+                                    Zeyu Zhang, Xiaohe Bo, Chen Ma, Rui Li, Xu Chen, Quanyu Dai, Jieming Zhu, Zhenhua Dong, Ji-Rong Wen,
+                                    "<i>A Survey on the Memory Mechanism of Large Language Model based Agents</i>," 
+                                    <a href="https://arxiv.org/abs/2404.13501v1" target="_blank">[arXiv:2404.13501v1]</a>  
+                                </li>
+                                <li id="ref4">
+                                    Junyu Luo et al.,
+                                    "<i>Large Language Model Agent: A Survey on Methodology, Applications and Challenges</i>,"
+                                    <a href="https://arxiv.org/abs/2503.21460v1" target="_blank">[arXiv:2503.21460v1]</a>
+                                </li>
+                                <li id="ref5">
+                                    Asaf Yehudai et al.,
+                                    "<i>Survey on Evaluation of LLM-based Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2503.16416v1" target="_blank">[arXiv:2503.16416v1]</a>
+                                </li>
+                                <li id="ref6">
+                                    Lianlei Shan, Shixian Luo, Zezhou Zhu, Yu Yuan, Yong Wu,
+                                    "<i>Cognitive Memory in Large Language Models</i>,"
+                                    <a href="https://arxiv.org/abs/2504.02441v1" target="_blank">[arXiv:2504.02441v1]</a>
+                                </li>
+                                <li id="ref7">
+                                    Yaxiong Wu et al.,
+                                    "<i>From Human Memory to AI Memory: A Survey on Memory Mechanisms in the Era of LLMs</i>,"
+                                    <a href="https://arxiv.org/abs/2504.15965" target="_blank">[arXiv:2504.15965]</a>
+                                </li>
+                                <li id="ref8">
+                                    Wujiang Xu, Kai Mei, Hang Gao, Juntao Tan, Zujie Liang, Yongfeng Zhang,
+                                    "<i>A-MEM: Agentic Memory for LLM Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2502.12110" target="_blank">[arXiv:2502.12110]</a>
+                                </li>
+                                <li id="ref9">
+                                    Yuxin Zhang, Yuxin Zhang, Yuxin Zhang, Yuxin Zhang,
+                                    "<i>AGENTPOISON: Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases</i>,"
+                                    38th Conference on Neural Information Processing Systems (NeurIPS 2024), 
+                                    <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/eb113910e9c3f6242541c1652e30dfd6-Paper-Conference.pdf" target="_blank">[Paper]</a>
+                                </li>
+                                <li id="ref10">
+                                    Jiahao Liu et al.,
+                                    "<i>AgentCF++: Memory-enhanced LLM-based Agents for Popularity-aware Cross-domain Recommendations</i>,"
+                                    <a href="https://arxiv.org/abs/2502.13843v2" target="_blank">[arXiv:2502.13843v2]</a>
+                                </li>
+                                <li id="ref11">
+                                    Wujiang Xu, Kai Mei, Hang Gao, Juntao Tan, Zujie Liang, Yongfeng Zhang,
+                                    "<i>A-MEM: Agentic Memory for LLM Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2502.12110v1" target="_blank">[arXiv:2502.12110v1]</a>
+                                </li>
+                                <li id="ref12">
+                                    Pengyu Gao, Jinming Zhao, Xinyue Chen, Yilin Long,
+                                    "<i>An Efficient Context-Dependent Memory Framework for LLM-Centric Agents</i>,"
+                                    <a href="https://aclanthology.org/2025.naacl-industry.80.pdf" target="_blank">[Paper]</a>
+                                </li>
+                                <li id="ref13">
+                                    Yao Fu et al.,
+                                    "<i>AutoGuide: Automated Generation and Selection of Context-Aware Guidelines for Large Language Model Agents</i>,"
+                                    <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/d8efbb5dd415974eb095c3f06bff1f48-Paper-Conference.pdf" target="_blank">[Paper]</a>
+                                </li>
+                                <li id="ref14">
+                                    Byeonghwi Kim et al.,
+                                    "<i>Context-Aware Planning and Environment-Aware Memory for Instruction Following Embodied Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2308.07241v4" target="_blank">[arXiv:2308.07241v4]</a>
+                                </li>
+                                <li id="ref15">
+                                    Charlie Snell, Mengjiao Yang, Justin Fu,Yi Su, Sergey Levine,
+                                    "<i>Context-Aware Language Modeling for Goal-Oriented Dialogue Systems - ACL Anthology</i>,"
+                                    <a href="https://aclanthology.org/2022.findings-naacl.181.pdf" target="_blank">[Paper]</a>
+                                </li>
+                                <li id="ref16">
+                                    Yapeng Mi, Zhi Gao, Xiaojian Ma, Qing Li,
+                                    "<i>Building LLM Agents by Incorporating Insights from Computer Systems</i>,"
+                                    <a href="https://arxiv.org/abs/2504.04485v1" target="_blank">[arXiv:2504.04485v1]</a>
+                                </li>
+                                <li id="ref17">
+                                    Junyu Luo et al.,
+                                    "<i>Large Language Model Agent: A Survey on Methodology, Applications and Challenges</i>,"
+                                    <a href="https://arxiv.org/abs/2503.21460" target="_blank">[arXiv:2503.21460]</a>
+                                </li>
+                                <li id="ref18">
+                                    Yuxin Zhang et al.,
+                                    "<i>EvoAgent: Agent Autonomous Evolution with Continual World Model for Long-Horizon Tasks</i>,"
+                                    <a href="https://arxiv.org/abs/2502.05907" target="_blank">[arXiv:2502.05907]</a>
+                                </li>
+                                <li id="ref19">
+                                    Sheila Schoepp.,
+                                    "<i>The Evolving Landscape of LLM- and VLM-Integrated Reinforcement Learning</i>,"
+                                    <a href="https://arxiv.org/abs/2502.15214" target="_blank">[arXiv:2502.15214]</a>
+                                </li>
+                                <li id="ref20">
+                                    Hao Tang, Darren Key, Kevin Ellis,
+                                    "<i>WorldCoder, a Model-Based LLM Agent: Building World Models by Writing Code and Interacting with the Environment</i>,"
+                                    38th Conference on Neural Information Processing Systems (NeurIPS 2024),
+                                    <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/820c61a0cd419163ccbd2c33b268816e-Paper-Conference.pdf" target="_blank">[Paper]</a>
+                                </li>
+                                <li id="ref21">
+                                    Minjong Yoo, Jinwoo Jang, Wei-Jin Park, Honguk Woo,
+                                    "<i>Exploratory Retrieval-Augmented Planning For Continual Embodied Instruction Following</i>,"
+                                    38th Conference on Neural Information Processing Systems (NeurIPS 2024),
+                                    <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/7bacd0ebd061d4694583ae0eb69ad15f-Paper-Conference.pdf" target="_blank">[Paper]</a>
+                                </li>
+                                <li id="ref22">
+                                    Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, Gao Huang,
+                                    "<i>ExpeL: LLM Agents Are Experiential Learners</i>,"
+                                    <a href="https://arxiv.org/abs/2308.10144v3" target="_blank">[arXiv:2308.10144v3]</a>
+                                </li>
+                                <li id="ref23">
+                                    Adyasha Maharana et al.,
+                                    "<i>Evaluating Very Long-Term Conversational Memory of LLM Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2402.17753v1" target="_blank">[arXiv:2402.17753v1]</a>
+                                </li>
+                                <li id="ref24">
+                                    https://github.com/iwangjian/Paper-Reading-ConvAI, GitHub, accessed April 30, 2025, 
+                                    "<i>Paper-Reading-ConvAI</i>,"
+                                    <a href="https://github.com/iwangjian/Paper-Reading-ConvAI" target="_blank">[Github]</a>
+                                </li>
+                                <li id="ref25">
+                                    Ruihong Zeng, Jinyuan Fang, Siwei Liu, Zaiqiao Meng,
+                                    "<i>On the Structural Memory of LLM Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2412.15266v1" target="_blank">[arXiv:2412.15266v1]</a>
+                                </li>
+                                <li id="ref26">
+                                    Kostas Hatalis, Despina Christou, Vyshnavi Kondapalli,
+                                    "<i>Review of Case-Based Reasoning for LLM Agents: Theoretical Foundations, Architectural Components, and Cognitive Integration</i>,"
+                                    <a href="https://arxiv.org/abs/2504.06943v1" target="_blank">[arXiv:2504.06943v1]</a>
+                                </li>
+                                <li id="ref27">
+                                    xinzhel/LLM-Agent-Survey - GitHub, accessed April 30, 2025,
+                                    "<i>LLM-Agent-Survey</i>,"
+                                    <a href="https://github.com/xinzhel/LLM-Agent-Survey" target="_blank">[Github]</a>
+                                </li>
+                                <li id="ref28">
+                                    Zexue He, Leonid Karlinsky, Donghyun Kim, Julian McAuley, Dmitry Krotov, Rogerio Feris,
+                                    "<i>CAMELoT: Towards Large Language Models with Training-Free Consolidated Associative Memory</i>,"
+                                    <a href="https://arxiv.org/abs/2402.13449" target="_blank">[arXiv:2402.13449]</a>
+                                </li>
+                                <li id="ref29">
+                                    Mathis Pink et al.,
+                                    "<i>Position: Episodic Memory is the Missing Piece for Long-Term LLM Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2502.06975" target="_blank">[arXiv:2502.06975]</a>
+                                </li>
+                                <li id="ref30">
+                                    Xun Jiang et al.,
+                                    "<i>Long Term Memory: The Foundation of AI Self-Evolution</i>,"
+                                    <a href="https://arxiv.org/abs/2410.15665v1" target="_blank">[arXiv:2410.15665v1]</a>
+                                </li>
+                                <li id="ref31">
+                                    Shuaihang Chen, Yuanxing Liu, Wei Han, Weinan Zhang, Ting Liu,
+                                    "<i>A Survey on LLM-based Multi-Agent System: Recent Advances and New Frontiers in Application</i>,"
+                                    <a href="https://arxiv.org/abs/2412.17481v2" target="_blank">[arXiv:2412.17481v2]</a>
+                                </li>
+                                <li id="ref32">
+                                    Gaotang Li, Ting-Wei Li, Xuying Ning,
+                                    "<i>Mind the Agent: A Comprehensive Survey on Large Language Model-Based Agent Safety</i>,"
+                                    <a href="https://openreview.net/forum?id=DHe0UXipKU&noteId=DHe0UXipKU" target="_blank">[OpenReview]</a>
+                                </li>
+                                <li id="ref33">
+                                    Shen Dong et al.,
+                                    "<i>A Practical Memory Injection Attack against LLM Agents</i>,"
+                                    <a href="https://arxiv.org/abs/2503.03704v2" target="_blank">[arXiv:2503.03704v2]</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>    
+                </div>
+            </section>
+        <!-- <div id="footer"></div> -->
+    </body>
+</html>

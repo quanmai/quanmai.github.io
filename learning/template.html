@@ -19,13 +19,13 @@
         <!-- <div id="footer"></div> -->
         <script>
             $(function() {
-                $("#footer").load("../footer.html");
-                $("#about").load("../about.html");
+                // $("#footer").load("footer.html");
+                // $("#about").load("about.html");
                 $("#navbar").load("../navbar.html");
             });
         </script>
 
-        <!-- <style>
+        <style>
             body {
                 counter-reset: section;
             }
@@ -42,7 +42,7 @@
                 content: counter(section) "." counter(subsection) " ";
                 font-weight: bold;
             }
-        </style> -->
+        </style>
 
     </head>
 
@@ -50,38 +50,43 @@
         <div class="columns">
             <div class="column is-2">
                 <aside class="menu">
-                    <p class="menu-label">But why</p>
+                    <p class="menu-label p-2">But why</p>
                         <ul class="menu-list">
                             <li><a href="../learning.html">Because...</a></li>
                         </ul>
                     <p class="menu-label">Writings</p>
                         <ul class="menu-list">
-                            <li><a href="diffusion.html">Diffusion Models</a></li>
+                            <li><a class="is-active" href="">Diffusion Models</a></li>
                             <li><a href="sculptor.html">Diffusion as a Manifold Sculptor</a></li>
-                            <li><a class="is-active" href="">Transformers</a></li>
-                            <li><a href="adaptive_memory.html">Adaptive Memory Retrieval in LLM Agents</a></li>
+                            <li><a href="transformer.html">Transformers</a></li>
                         </ul>
                     <p class="menu-label">Paper Summary</p>
-                        <ul class="menu-list">
-                            <li><a href="memgpt.html">MemGPT</a></li>
-                        </ul>
-
+                    <ul class="menu-list">
+                        <li><a href="memgpt.html">MemGPT</a></li>
+                    </ul>
                 </aside>
 
             </div>
-            
-            <section class="section">
-                <div class="container">
-                    <div class="column is-7 is-offset-2">
+            <!-- <section class="section"> -->
+                <!-- <div class="container"> -->
+                    <div class="column is-7 is-offset-1">
                         <div class="content">
-                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Pre-Transformers, Transformers, Post-Transformers</h1>
-                            <p class="is-size-5">
-                                To be updated...
-                            </p>
-
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Diffusion</h1>
+                            
+                            <h2>References</h2>
+                            <ol>
+                                <li id="ref1">
+                                    Jonathan Ho, Ajay Jain, Pieter Abbeel, 
+                                    "<i>Denoising Diffusion Probabilistic Models</i>," 
+                                    Advances in Neural Information Processing Systems (NeurIPS), 2020.  
+                                    <a href="https://arxiv.org/abs/2006.11239" target="_blank">[arXiv:2006.11239]</a>  
+                                    <a href="#citation1">↑ Back to text</a>
+                                </li>
+                            </ol>
                         </div>
                     </div>    
-                </div>
-            </section>
+                <!-- </div> -->
+            <!-- </section> -->
+        <!-- <div id="footer"></div> -->
     </body>
 </html>
