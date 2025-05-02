@@ -69,12 +69,13 @@
 
             </div>
             
-            <section class="section">
-                <div class="container">
-                    <div class="column is-7 is-offset-2">
-                        <div class="content">
-                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Diffusion as a Manifold Sculptor</h1>
-                            <p class="is-size-5">
+            <div class="column is-6 is-offset-1">
+                <section class="section">
+                    <div class="container">
+                        <div class="content is-size-5">
+                            <h1 class="title is-1 has-text-weight-bold has-text-centered is-family-sans-serif">Diffusion as a Manifold Sculptor</h1>
+                            <br>
+                            <p>
                                 In math and machine learning, a <a href="https://en.wikipedia.org/wiki/Manifold">Manifold</a> is a lower-dimensional, smooth surface
                                 embedded in a higher-dimensional space. For embeddings, the idea is that the data points
                                 (documents, images, etc.) lie on some intrinsic structure - a curve <q>sheet</q> defined by
@@ -92,7 +93,7 @@
 
                             <br>
                             <h2>Diffusion Models: Shapping the Manifold</h2>
-                            <p class="is-size-5">
+                            <p>
                                 <b>Diffusion Models</b><a href="#ref-2" id="citation2"><sup>[2]</sup></a> are popular in generative tasks such as image synthesis (e.g., DALL-E, Stable Diffusion),
                                 they work by iteratively refining noisy data back to a clean, high-quality state. Here, instead of creating 
                                 a manifold from a scratch, diffusion models will <i>refine and reshape</i> the existing one 
@@ -118,7 +119,7 @@
                                 </ul>
                             </p>
                             
-                            <p class="is-size-5">
+                            <p>
 
                                 The refined embeddings still from a manifold - a continuous, lower-dimensional structure - but it's 
                                 now <b>task-tailored.</b>
@@ -156,7 +157,7 @@
                             <br>
 
                             <h2>Refinement, not Replacement</h2>
-                            <p class="is-size-5">
+                            <p>
                                 The key here is that diffusion model does not discard BERT's manifold, it does leverage it as a strong
                                 foundation. Diffusion here acts as a fine-tuner, using a pretrained manifold as a head start (better than a random
                                 vectors). Without that starting structure, denoising from pure noise would be much harder and less effective.
@@ -164,7 +165,7 @@
                             <br>
 
                             <h2>So, Yes - Diffusion Model Can Be a Manifold Sculptor</h2>
-                            <p class="is-size-5">
+                            <p>
                                 The diffusion model's job here is to <b>shape the existing manifold</b>. It takes the pretrained embeddings'
                                 inherent structure and molds it into a form  that's more useful for retrieval. It's neither a discriminator
                                 nor a generator - it's a <b>manifold sculptor</b>, enhancing what's already there.
@@ -172,7 +173,7 @@
                             <br>
                             
                             <h2>Of Course, No Free Lunch!</h2>
-                            <p class="is-size-5">
+                            <p>
                                 While the idea sounds promising (ikr), and diffusion models are powerful, they are not a silver bullet. 
                                 
                                 <br><br>
@@ -211,7 +212,7 @@
 
                         </div>
                     </div>    
-                </div>
-            </section>
+                </section>
+            </div>
     </body>
 </html>
