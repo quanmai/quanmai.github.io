@@ -82,7 +82,7 @@
                                 My notes on the paper <a href="https://openreview.net/pdf?id=yzloNYH3QN" target="_blank">Attention In LLMs Yields Efficient Zero-Shot Rerankers </a> by Chen et al. (2024).
                             </p>
 
-                            <h2>Why it's cool?</h2>
+                            <h2>Why it's cool? - TL;DR</h2>
                             <ul>
                                 <li>Innovation: Uses attention shifts, not generation, for re-ranking.</li>
                                 <li>Efficiency: Just two forward passes → O(1) time per query.</li>
@@ -108,15 +108,16 @@
                             <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent);"></div>
 </div>
 
-                            <h2>Motivation</h2>
+                            <h2>Can attention reveal relevance?</h2>
                             <p>
                                 Imagine you're organizing a talent show with thousands of performers (documents), but you only want the top 10 to go on stage. Current methods ask each performer to sing (generate text) before judging—costly and slow. 
-                                What if we could judge them just by watching where the model pays attention? That's the idea: <b>can attention alone reveal relevance?</b>
+                                What if we could judge them just by watching where the model pays attention? 
+                                <!-- That's the idea: <b>can attention alone reveal relevance?</b> -->
                             </p>
 
-                            <h2>Approach</h2>
+                            <h2>In-Context Re-Ranking</h2>
                             <p>
-                                The authors introduce <strong>In-Context Re-Ranking (ICR)</strong>, a method that leverages LLM attention without generation:
+                                The authors introduce <strong>ICR</strong>, a method that leverages LLM attention without generation:
                             </p>
                             <ul>
                                 <li>Format the query and candidate documents into a single prompt.</li>
