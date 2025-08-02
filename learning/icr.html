@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quan Mai</title>
+        <link rel="stylesheet" href="../css/bulma.css">
+        <link rel="stylesheet" href="../css/mine.css">
+        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons/css/all.min.css" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <div id="navbar"></div>
+        <!-- <div id="footer"></div> -->
+        <script>
+            $(function() {
+                // $("#footer").load("footer.html");
+                // $("#about").load("about.html");
+                $("#navbar").load("../navbar.html");
+            });
+        </script>
+
+        <!-- <style>
+            body {
+                counter-reset: section;
+            }
+            h2 {
+                counter-reset: subsection;
+            }
+            h2::before {
+                counter-increment: section;
+                content: counter(section) ". ";
+                font-weight: bold;
+            }
+            h3::before {
+                counter-increment: subsection;
+                content: counter(section) "." counter(subsection) " ";
+                font-weight: bold;
+            }
+        </style> -->
+
+    </head>
+
+    <body>
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label p-2">But why</p>
+                        <ul class="menu-list">
+                            <li><a href="../learning.html">Because...</a></li>
+                        </ul>
+                    <p class="menu-label">Writings</p>
+                        <ul class="menu-list">
+                            <li><a href="diffusion.html">Diffusion Models</a></li>
+                            <li><a href="sculptor.html">Diffusion as a Manifold Sculptor</a></li>
+                            <li><a href="transformer.html">Transformers</a></li>
+                            <li><a href="adaptive_memory.html">Adaptive Memory Retrieval in LLM Agents</a></li>
+                        </ul>
+                    <p class="menu-label">Paper Summary</p>
+                        <ul class="menu-list">
+                        <li><a href="memgpt.html">MemGPT</a></li>
+                        <li><a class="is-active" href="">ICR</a></li>
+                    </ul>
+                </aside>
+
+            </div>
+            <div class="column is-5 is-offset-2">
+                <section class="section">
+                    <div class="container">
+                        <div class="content is-size-5">
+                            <h1 class="title is-1 has-text-centered is-family-sans-serif">Paper Notes - ICR</h1>
+                            <p class="has-text-centered">
+                                Aug 2, 2025
+                            </p>
+
+                            <p>
+                                My notes on the paper <a href="https://openreview.net/pdf?id=yzloNYH3QN" target="_blank">Attention In LLMs Yields Efficient Zero-Shot Rerankers </a> by Chen et al. (2024).
+                            </p>
+
+                            <h2>Why it's cool?</h2>
+                            <ul>
+                                <li>Innovation: Uses attention shifts, not generation, for re-ranking.</li>
+                                <li>Efficiency: Just two forward passes → O(1) time per query.</li>
+                                <li>Calibration: Removes bias with a content‑free query baseline</li>
+                                <li>Accessibility: Works on open models, no extra training.</li>
+                                <li>Performance: Wins over RankGPT and scales faster.</li>
+                            </ul>
+
+                            <!-- Separator -->
+                            <!-- <div style="margin: 2.5rem 0; text-align: center;">
+                                <hr style="border: none; border-top: 1px solid #ccc; margin-bottom: 0.5rem;">
+                                <span style="background: #fff; padding: 0 1rem; font-weight: bold; color: #888; font-size: 0.9rem;">
+                                    Deep Dive
+                                </span>
+                                <hr style="border: none; border-top: 1px solid #ccc; margin-top: 0.5rem;">
+                            </div> -->
+
+                            <div style="display: flex; align-items: center; margin: 3rem 0;">
+                            <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent);"></div>
+                            <div style="padding: 0 1rem; color: #666; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center;">
+                                <span style="margin-right: 0.5rem;">🔍</span> Deep Dive
+                            </div>
+                            <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent);"></div>
+</div>
+
+                            <h2>Motivation</h2>
+                            <p>
+                                Imagine you're organizing a talent show with thousands of performers (documents), but you only want the top 10 to go on stage. Current methods ask each performer to sing (generate text) before judging—costly and slow. 
+                                What if we could judge them just by watching where the model pays attention? That's the idea: <b>can attention alone reveal relevance?</b>
+                            </p>
+
+                            <h2>Approach</h2>
+                            <p>
+                                The authors introduce <strong>In-Context Re-Ranking (ICR)</strong>, a method that leverages LLM attention without generation:
+                            </p>
+                            <ul>
+                                <li>Format the query and candidate documents into a single prompt.</li>
+                                <li>Extract the attention weights from query tokens to each document.</li>
+                                <li>Run a second pass with a content-free query (e.g., "N/A").</li>
+                                <li>Subtract attention baselines to yield bias-free relevance scores.</li>
+                            </ul>
+                            <p>
+                                Just two forward passes, no training, no gradients—zero-shot and constant-time.
+                            </p>
+
+                            <h2>Findings</h2>
+                            <ul>
+                                <li>On MS MARCO, ICR outperforms RankGPT and ColBERTv2 by up to <strong>+8.5 MRR@10</strong>.</li>
+                                <li>Improves multi-hop retrieval by <strong>+2.2 points</strong>.</li>
+                                <li>Reduces inference time by over <strong>60%</strong> compared to generative re-rankers.</li>
+                            </ul>
+
+                            <h2>Takeaway</h2>
+                            <p>
+                                This paper reimagines the LLM as a silent observer. Instead of making the model talk, we ask it to listen to where it pays attention. That attention becomes a powerful, scalable, and efficient signal for re-ranking documents.
+                            </p>
+
+                            <blockquote>
+                                <em>Attention isn't just for learning—it's for retrieval.</em> 
+                                <!-- “It reimagines the LLM not as a talkative oracle, but as an observant listener— -->
+                                <!-- ranking wisely by <strong>where</strong> it pays attention, not by <strong>what</strong> it says.” -->
+                            </blockquote>
+                        </div>
+                    </div>
+
+                </section>
+            </div>  
+        <!-- <div id="footer"></div> -->
+    </body>
+</html>
